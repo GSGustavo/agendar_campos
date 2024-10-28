@@ -11,27 +11,29 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.4.0/fonts/remixicon.min.css" />
 
- 
-  
 
 
-    {{-- <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+
+
+    <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
-    <script src="//unpkg.com/alpinejs" defer></script> --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
+
+
 
     @yield('css')
-
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-  
+
 </head>
 
-<body class="h-max p-10">
-        @yield('content')
-  
+<body class="h-max">
+    @yield('content')
+    @include('components.floatbar')
 </body>
-
+<script src="{{asset('js/libs/jquery/main.js')}}"></script>
+<script src="{{asset('js/libs/jquerymask/main.js')}}"></script>
 @yield('js')
 
 

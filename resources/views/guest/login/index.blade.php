@@ -1,15 +1,16 @@
 @extends('layouts.guest.layout')
 
 @section('js')
-    @vite('resources/js/app.js')
+
 @endsection
 
 @section('css')
-    @vite('resources/css/app.css')
+
+
 @endsection
 
 @section('content')
-    <div class="h-max flex justify-center">
+    <div class="flex justify-center">
         <div class="flex flex-col w-[350px] xl:w-[500px] ">
             <div>
 
@@ -24,12 +25,12 @@
             <div class="">
                 <div class="">
 
-                    <div class="mb-3 flex flex-col">
-                        <label htmlFor="formGroupExampleinput" class="form-label">
-                            Email: <span class="text-danger ">*</span>
+                    <div class="mb-3 flex flex-col gap-2">
+                        <label for="email" class="">
+                            Email: <span class="text-red-500">*</span>
                         </label>
 
-                        <input type="text" class="form-control focus:border-b-5 border-black transition-all duration-150"
+                        <input type="text" class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
                             id="email" placeholder="Ex: joaosilva@gmail.com">
                         </input>
                     </div>
@@ -38,23 +39,22 @@
             <div class="">
                 <div class="">
                     <div class="mb-3 flex flex-col">
-                        <label htmlFor="formGroupExampleinput" class="form-label">Senha: <span
+                        <label for="password" class="">Senha: <span
                                 class="text-danger ">*</span></label>
 
-                        <input type="password" class="form-control focus:border-b-5 border-black" id="password"
-                            placeholder="Senha">
-                        </input>
+                                <input type="text" class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
+                                id="password" placeholder="Ex: joaosilva@gmail.com">
+                            </input>
 
                     </div>
                 </div>
             </div>
             <div class="my-5">
-                <div class=" text-center">
+                <div class="text-center">
                     
-                    <x-primary-button class="bg-transparent hover:text-black hover:border-black hover:border-2 transition-all duration-100 bg-black text-white">
+                    <button class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
                         Entrar
-                    </x-primary-button>
-                    <x-bladewind::button>Save User</x-bladewind::button>
+                    </button>
                 </div>
             </div>
             <div class="my-5">
@@ -65,11 +65,11 @@
             </div>
             <div class="my-5">
                 <div class=" text-center">
-                    <button
-                        class="hover:bg-transparent hover:text-black hover:border-black hover:border-2 transition-all duration-100">
-                        <i class="ri-calendar-2-line" />
-                        Disponibilidade
+                    <button class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-green  hover:text-black font-black border-2 hover:border-black transition-all duration-100">
+                        <i class="ri-calendar-line"></i>
+                          Disponibilidade
                     </button>
+              
                 </div>
             </div>
         </div>
