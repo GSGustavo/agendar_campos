@@ -36,19 +36,7 @@
                 </div>
             </div>
         </div>
-        @php
-            $diasSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
-
-            $colunas = [
-                ['D', '1', '1', '1', '1', '1'],
-                ['S', '1', '1', '1', '1', '1'],
-                ['T', '1', '1', '1', '1', '1'],
-                ['Q', '1', '1', '1', '1', '1'],
-                ['Q', '1', '1', '1', '1', '1'],
-                ['S', '1', '1', '1', '1', '1'],
-                ['S', '1', '1', '1', '1', '1'],
-            ];
-        @endphp
+        
         {{-- <div class="flex items-center">
             <div class="flex flex-col mx-auto items-center w-[300px] gap-4">
            
@@ -70,27 +58,36 @@
             </div>
         </div> --}}
 
-        <div class="flex text-center">
+        {{-- <div class="flex justify-center">
 
-            @foreach ($colunas as $coluna)
-                <div class="flex flex-col">
-                    @foreach ($coluna as $item)
-                        @if (is_numeric($item))
-                            <button class="w-10 h-10">
-                                {{ $item }}
-                            </button>
-                        @else
-                            <div class="w-10 h-10 text-gray">
-                                {{ $item }}
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-            @endforeach
+            <div class="flex text-center gap-2" id="calendarCols">
+                @foreach ($colunas as $coluna)
+                    <div class="flex flex-col gap-2">
+                        @foreach ($coluna as $item)
+                            @if (is_numeric($item))
+                                <button class="w-10 h-10 hover:bg-primary hover:text-white transiton-all duration-150">
+                                    {{ $item }}
+                                </button>
+                            @else
+                                <div class="w-10 h-10 text-gray self-center">
+                                    {{ $item }}
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                @endforeach
+            </div>
+        </div> --}}
+
+        <div class="flex justify-center">
+
+            <div class="flex text-center gap-2" id="calendarCols">
+                
+            </div>
         </div>
 
 
-        <div class="w-full">
+        <div class="flex justify-center items-center w-full">
             <div class="flex justify-between items-center gap-10">
                 <input type="text" placeholder="00:00"
                     class="time shadow-lg text-center text-lg p-2 font-black border-2 border-primary h-70 rounded-[10px] w-40" />
