@@ -1,3 +1,23 @@
+{{-- Div com as classes que estão no javascript --}}
+
+<div
+    class="hidden
+bg-red-500
+bg-gray
+border-gray
+opacity-25
+bg-green
+rounded-[7px]
+hover:border-2
+hover:border-primary
+transiton-all
+duration-150
+text-gray">
+
+</div>
+
+{{-- Div com as classes que estão no javascript --}}
+
 @extends('layouts.auth.layout')
 
 @section('js')
@@ -31,32 +51,56 @@
                     ];
                 @endphp
                 <div class="w-[200px]">
-                    <x-bladewind::dropdown placeholder="Campo" name="country" :data="$countries" label_key="nome"
-                        value_key="id" />
+                    <select id="countries"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+                        <option selected>Choose a country</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="FR">France</option>
+                        <option value="DE">Germany</option>
+                    </select>
                 </div>
             </div>
         </div>
-        
-        {{-- <div class="flex items-center">
-            <div class="flex flex-col mx-auto items-center w-[300px] gap-4">
-           
 
-                <div class="flex justify-between w-full">
+        @php
+            $diasSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+
+            $colunas = [
+                ['D', '1', '1', '1', '1', '1'],
+                ['S', '1', '1', '1', '1', '1'],
+                ['T', '1', '1', '1', '1', '1'],
+                ['Q', '1', '1', '1', '1', '1'],
+                ['Q', '1', '1', '1', '1', '1'],
+                ['S', '1', '1', '1', '1', '1'],
+                ['S', '1', '1', '1', '1', '1'],
+            ];
+        @endphp
+
+        <div class="flex items-center">
+            <div class="flex flex-col mx-auto items-center gap-4">
+
+
+                <div class="flex w-full gap-2">
                     @foreach ($diasSemana as $dia)
-                        <div class="text-gray">
+                        <div class="flex items-center justify-center w-10 h-10 text-gray self-center text-center">
                             {{ $dia }}
                         </div>
                     @endforeach
                 </div>
-                <div class="flex">
-                    @for ($i = 0; $i < 7; $i++)
-                        <button class="text-gray border-2 border-primary text-center w-[40px] h-[40px]">
-                            0
-                        </button>
-                    @endfor
-                </div>
+                @for ($i = 0; $i < 5; $i++)
+                    <div class="flex w-full gap-2">
+                        @for ($g = 0; $g < 7; $g++)
+                            <button
+                                class="w-10 h-10 rounded-[7px] hover:border-2 hover:border-primary  transiton-all duration-150 ">
+                                0
+                            </button>
+                        @endfor
+                    </div>
+                @endfor
+
             </div>
-        </div> --}}
+        </div>
 
         {{-- <div class="flex justify-center">
 
@@ -79,12 +123,25 @@
             </div>
         </div> --}}
 
-        <div class="flex justify-center">
+        {{-- <div class="flex justify-center">
 
-            <div class="flex text-center gap-2" id="calendarCols">
-                
+            <div class="flex flex-col text-center gap-2">
+                <div class="flex justify-between">
+                    <button class="w-8 h-8 rounded-[7px] border-2 border-gray hover:bg-primary hover:text-white">
+                        <i class="ri-arrow-drop-left-line"></i>
+                    </button>
+                    <div class="self-center">
+                        <span id="mes">Outubro</span>
+                        <span id="ano">2024</span>
+                    </div>
+                    <button class="w-8 h-8 rounded-[7px] border-2 border-gray hover:bg-primary hover:text-white">
+                        <i class="ri-arrow-drop-right-line"></i>
+                    </button>
+                </div>
+                <div class="flex text-center gap-2" id="calendarCols"></div>
             </div>
-        </div>
+        </div> --}}
+
 
 
         <div class="flex justify-center items-center w-full">
