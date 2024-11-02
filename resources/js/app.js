@@ -11,7 +11,7 @@ const app = createApp({})
 
 // Registers
 app.component('Counter', Counter)
-app.component('VueDatePicker', DataPicker);
+app.component('DatePicker', DataPicker);
 // Registers
 
 app.mount('#app')

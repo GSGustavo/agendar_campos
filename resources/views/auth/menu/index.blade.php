@@ -43,12 +43,13 @@
             </div>
         </div>
 
-        <div>
-            <vue-date-picker />
+        <div class="w-[300px] flex flex-col items-center">
+            <p class="my-2 text-black">
+                Escolha as datas que deseja reservar:
+            </p>
+            <date-picker inline />
         </div>
 
-
-    
         <div class="mx-auto">
             <button
                 class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-green  hover:text-black font-black border-2 hover:border-black transition-all duration-100">
