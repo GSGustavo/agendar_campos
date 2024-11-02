@@ -1,23 +1,3 @@
-{{-- Div com as classes que estão no javascript --}}
-
-<div
-    class="hidden
-bg-red-500
-bg-gray
-border-gray
-opacity-25
-bg-green
-rounded-[7px]
-hover:border-2
-hover:border-primary
-transiton-all
-duration-150
-text-gray">
-
-</div>
-
-{{-- Div com as classes que estão no javascript --}}
-
 @extends('layouts.auth.layout')
 
 @section('js')
@@ -63,99 +43,12 @@ text-gray">
             </div>
         </div>
 
-        @php
-            $diasSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
-
-            $colunas = [
-                ['D', '1', '1', '1', '1', '1'],
-                ['S', '1', '1', '1', '1', '1'],
-                ['T', '1', '1', '1', '1', '1'],
-                ['Q', '1', '1', '1', '1', '1'],
-                ['Q', '1', '1', '1', '1', '1'],
-                ['S', '1', '1', '1', '1', '1'],
-                ['S', '1', '1', '1', '1', '1'],
-            ];
-        @endphp
-
-        <div class="flex items-center">
-            <div class="flex flex-col mx-auto items-center gap-4">
-
-
-                <div class="flex w-full gap-2">
-                    @foreach ($diasSemana as $dia)
-                        <div class="flex items-center justify-center w-10 h-10 text-gray self-center text-center">
-                            {{ $dia }}
-                        </div>
-                    @endforeach
-                </div>
-                @for ($i = 0; $i < 5; $i++)
-                    <div class="flex w-full gap-2">
-                        @for ($g = 0; $g < 7; $g++)
-                            <button
-                                class="w-10 h-10 rounded-[7px] hover:border-2 hover:border-primary  transiton-all duration-150 ">
-                                0
-                            </button>
-                        @endfor
-                    </div>
-                @endfor
-
-            </div>
+        <div>
+            <vue-date-picker />
         </div>
 
-        {{-- <div class="flex justify-center">
 
-            <div class="flex text-center gap-2" id="calendarCols">
-                @foreach ($colunas as $coluna)
-                    <div class="flex flex-col gap-2">
-                        @foreach ($coluna as $item)
-                            @if (is_numeric($item))
-                                <button class="w-10 h-10 hover:bg-primary hover:text-white transiton-all duration-150">
-                                    {{ $item }}
-                                </button>
-                            @else
-                                <div class="w-10 h-10 text-gray self-center">
-                                    {{ $item }}
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                @endforeach
-            </div>
-        </div> --}}
-
-        {{-- <div class="flex justify-center">
-
-            <div class="flex flex-col text-center gap-2">
-                <div class="flex justify-between">
-                    <button class="w-8 h-8 rounded-[7px] border-2 border-gray hover:bg-primary hover:text-white">
-                        <i class="ri-arrow-drop-left-line"></i>
-                    </button>
-                    <div class="self-center">
-                        <span id="mes">Outubro</span>
-                        <span id="ano">2024</span>
-                    </div>
-                    <button class="w-8 h-8 rounded-[7px] border-2 border-gray hover:bg-primary hover:text-white">
-                        <i class="ri-arrow-drop-right-line"></i>
-                    </button>
-                </div>
-                <div class="flex text-center gap-2" id="calendarCols"></div>
-            </div>
-        </div> --}}
-
-
-
-        <div class="flex justify-center items-center w-full">
-            <div class="flex justify-between items-center gap-10">
-                <input type="text" placeholder="00:00"
-                    class="time shadow-lg text-center text-lg p-2 font-black border-2 border-primary h-70 rounded-[10px] w-40" />
-                <p>Até</p>
-                <input type="text" placeholder="00:00"
-                    class="time shadow-lg text-center text-lg p-2 font-black border-2 border-primary h-70 rounded-[10px] w-40" />
-            </div>
-        </div>
-        <div class="items-center flex gap-3 mx-auto hidden">
-            <x-bladewind::checkbox color="green" checked="true" label="Definir diferentes horários" />
-        </div>
+    
         <div class="mx-auto">
             <button
                 class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-green  hover:text-black font-black border-2 hover:border-black transition-all duration-100">

@@ -16,18 +16,18 @@
 
 
     @yield('css')
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
-
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    <link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css">
 </head>
 
-<body class="h-max">
+<body class="h-max" id="app">
     @yield('content')
     @include('components.floatbar')
 </body>
 <script src="{{asset('js/libs/jquery/main.js')}}"></script>
 <script src="{{asset('js/libs/jquerymask/main.js')}}"></script>
 @yield('js')
-
+<script src="https://unpkg.com/vue@latest"></script>
+<script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
 
 </html>

@@ -1,8 +1,17 @@
 import './bootstrap';
-import 'flowbite';
 
-import Alpine from 'alpinejs';
+import { createApp } from 'vue'
 
-window.Alpine = Alpine;
+// Imports
+import Counter from './Components/Counter.vue'
+import DataPicker from './Components/DataPicker.vue'
+// Imports
 
-Alpine.start();
+const app = createApp({})
+
+// Registers
+app.component('Counter', Counter)
+app.component('VueDatePicker', DataPicker);
+// Registers
+
+app.mount('#app')
