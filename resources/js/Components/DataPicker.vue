@@ -2,7 +2,7 @@
   <VueDatePicker locale="pt-br" v-model="date" placeholder="Garanta sua vaga" :multi-dates="{ limit: 3 }"
     :enable-time-picker="false" week-start="0" :day-names="['D', 'S', 'T', 'Q', 'Q', 'S', 'S']"
     @update:model-value="handleDate" select-text="Escolher" cancel-text="Fechar" />
-  <input type="hidden" name="dates" id="dates">
+  <input v-model="dates" type="text" id="dates" >
 </template>
 
 <script setup>

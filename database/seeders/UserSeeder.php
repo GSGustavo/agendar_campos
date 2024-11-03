@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
     {
         DB::table("users")->insert([
             'is_admin' => 1,
-            'nome' => "Gustavo",
-            'sobrenome' => "Gonzaga da Silva",
+            'name' => "Gustavo",
+            'lastname' => "Gonzaga da Silva",
             'email' => "gustavogonzagasilva@outlook.com",
             'password' => '$2y$10$xLQEdvkb53Dyb9BN7RkRD.lak4h.hh2wpjQ5Ffz94cukOhWVJC26a',
             'created_at' => '2024-09-28 22:00:00',

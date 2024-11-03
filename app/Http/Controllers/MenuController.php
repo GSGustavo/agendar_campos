@@ -15,38 +15,35 @@ class MenuController extends Controller
     public function save(Request $request)
     {
 
-        dd($request);
-
         $operationLog = 0;
         $dataBeforeLog = null;
-        $mensalidade = new Agendamentos();
+        $agendamento = new Agendamentos();
         $status = false; // Caiu na validação do status?
 
-
-        $dataAgendamento = [
-            'user_id' => 1,
-            'campo_id' => 1,
-            'date' => $request->date,
-            'init_time' => $request->init_time,
-            'final_time' => $request->final_time,
-            'status' => 1
-        ];
+        // $dataAgendamento = [
+        //     'user_id' => 1,
+        //     'campo_id' => 1,
+        //     'date' => $request->dates,
+        //     'init_time' => $request->init_time,
+        //     'end_time' => $request->end_time,
+        //     'status' => 1
+        // ];
 
         if ($request->id != 0) {
 
             $operationLog = 1;
-            $mensalidade = Agendamentos::find($request->id);
+            $agendamento = Agendamentos::find($request->id);
 
-            $dataBeforeLog = [
-                'user_id' => $mensalidade->user_id,
-                'campo_id' => $mensalidade->campo_id,
-                'date' => $mensalidade->date,
-                'init_time' => $mensalidade->init_time,
-                'final_time' => $mensalidade->final_time,
-                'status' => $mensalidade->status
-            ];
+            // $dataBeforeLog = [
+            //     'user_id' => $agendamento->user_id,
+            //     'campo_id' => $agendamento->campo_id,
+            //     'date' => $agendamento->date,
+            //     'init_time' => $agendamento->init_time,
+            //     'final_time' => $agendamento->final_time,
+            //     'status' => $agendamento->status
+            // ];
 
-            // $pagamentos = Pagamentos::query()->where("mensalidade_id", $mensalidade->id)->get();
+            // $pagamentos = Pagamentos::query()->where("mensalidade_id", $agendamento->id)->get();
             // if (!$pagamentos->isEmpty()) {
 
             //     $status = true;
@@ -56,12 +53,12 @@ class MenuController extends Controller
 
         $saveAgendamento = false;
 
-        if ($request->id != 0) {
-            $saveAgendamento = $mensalidade->update($dataAgendamento);
-        } else {
-            $saveAgendamento = Agendamentos::create($dataAgendamento);
-            dd($saveAgendamento);
-        }
+        // if ($request->id != 0) {
+        //     $saveAgendamento = $agendamento->update($dataAgendamento);
+        // } else {
+        //     $saveAgendamento = Agendamentos::create($dataAgendamento);
+            
+        // }
 
         // if ($saveAgendamento) {
         //     $mensagem = "Mensalidade salva com sucesso!";
@@ -81,6 +78,6 @@ class MenuController extends Controller
         //     ]);
         // }
 
-        return redirect()->route("auth.menu.index");
+        return $request;
     }
 }
