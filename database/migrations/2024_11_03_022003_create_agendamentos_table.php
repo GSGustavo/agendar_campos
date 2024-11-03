@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('campo_id')->constrained();
             $table->date("date");
             $table->time("init_time");
-            $table->time("final_time");
+            $table->time("end_time");
             $table->integer("status")->default("1"); // 0 desativado / 1 ativo
             $table->timestamps();
         });

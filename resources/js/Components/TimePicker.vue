@@ -1,7 +1,8 @@
 <template>
-    <VueDatePicker locale="pt-br" :start-time="startTime" v-model="time" time-picker
+    <VueDatePicker  locale="pt-br" :start-time="startTime" v-model="time" time-picker
         :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário" minutes-increment="5" @update:model-value="handleDate" select-text="Escolher" cancel-text="Fechar"/>
-
+    <input type="hidden" name="init_time" id="init_time">
+    <input type="hidden" name="end_time" id="end_time">
 </template>
 
 <script setup>
@@ -23,8 +24,13 @@ const startTime = ref(
     ]
 );
 
+const clearTrigger = () => {
+  $("#dates").val('')
+}
+
 const handleDate = (modelData) => {
-  console.log(modelData)
+  $("#init_time").val(`${modelData[0].hours}:${modelData[0].minutes}`)
+  $("#end_time").val(`${modelData[1].hours}:${modelData[1].minutes}`)
 }
 
 </script>
