@@ -1,8 +1,5 @@
 <template>
-    <VueDatePicker  locale="pt-br" :start-time="startTime" v-model="time" time-picker
-        :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário" minutes-increment="5" @update:model-value="handleDate" select-text="Escolher" cancel-text="Fechar"/>
-    <input v-model="init_time" type="text" name="init_time" id="init_time">
-    <input v-model="end_time" type="text" name="end_time" id="end_time">
+  
 </template>
 
 <script setup>

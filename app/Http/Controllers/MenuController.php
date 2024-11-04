@@ -20,14 +20,19 @@ class MenuController extends Controller
         $agendamento = new Agendamentos();
         $status = false; // Caiu na validação do status?
 
-        // $dataAgendamento = [
-        //     'user_id' => 1,
-        //     'campo_id' => 1,
-        //     'date' => $request->dates,
-        //     'init_time' => $request->init_time,
-        //     'end_time' => $request->end_time,
-        //     'status' => 1
-        // ];
+        $dataAgendamentos = [];
+
+        foreach (json_decode($request->dates) as $date) {
+            $dataAgendamentos[] = [
+                'user_id' => 1,
+                'campo_id' => 1,
+                'date' => $date,
+                'init_time' => $request->init_time,
+                'end_time' => $request->end_time,
+                'status' => 1
+            ];
+        }
+       
 
         if ($request->id != 0) {
 
@@ -53,12 +58,15 @@ class MenuController extends Controller
 
         $saveAgendamento = false;
 
-        // if ($request->id != 0) {
-        //     $saveAgendamento = $agendamento->update($dataAgendamento);
-        // } else {
-        //     $saveAgendamento = Agendamentos::create($dataAgendamento);
+        if ($request->id != 0) {
+            // $saveAgendamento = $agendamento->update($dataAgendamento);
+        } else {
+            foreach ($dataAgendamentos as $dataAgendamento) {
+                $saveAgendamento = Agendamentos::create($dataAgendamento);
+            }
+        
             
-        // }
+        }
 
         // if ($saveAgendamento) {
         //     $mensagem = "Mensalidade salva com sucesso!";
@@ -78,6 +86,6 @@ class MenuController extends Controller
         //     ]);
         // }
 
-        return $request;
+        return $dataAgendamento;
     }
 }
