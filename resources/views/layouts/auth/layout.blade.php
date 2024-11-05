@@ -22,7 +22,7 @@
 
 <body class="h-max" id="app">
     @yield('content')
-    @include('components.floatbar')
+    <float-bar mode='0'></float-bar>
 </body>
 <script src="{{asset('js/libs/jquery/main.js')}}"></script>
 <script src="{{asset('js/libs/jquerymask/main.js')}}"></script>

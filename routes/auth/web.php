@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgendamentosController;
 use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +15,8 @@ Route::controller(MenuController::class)->group(function() {
     // POST
     Route::post("/menu/agendamento/save", "save")->name("menu.agendamento.save");
     // Route::post("/alterar/academico", "alter")->name("academico.alterar");
+});
+
+Route::controller(AgendamentosController::class)->group(function() {
+    Route::get('/agendamentos', 'index')->name("auth.agendamentos.index");
 });
