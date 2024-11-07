@@ -1,15 +1,4 @@
-@extends('layouts.guest.layout')
-
-@section('js')
-
-@endsection
-
-@section('css')
-
-
-@endsection
-
-@section('content')
+<template>
     <div class="flex justify-center">
         <div class="flex flex-col w-[350px] xl:w-[500px] ">
             <div>
@@ -74,4 +63,18 @@
             </div>
         </div>
     </div>
-@endsection
+</template>
+
+<script>
+
+
+export default {
+    props: {
+        'user': String
+    },
+    setup(props) {
+        console.log(props.user)
+    },
+
+}
+</script>

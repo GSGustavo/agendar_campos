@@ -38,12 +38,17 @@
 
 <script>
 import axios from 'axios';
-
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
 
 
 
 export default {
+    components: {VueDatePicker},
+    props: {
+        'url': String
+    },
     setup() {
 
         const date = ref();

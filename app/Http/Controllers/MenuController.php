@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Agendamentos;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MenuController extends Controller
 {
     public function index()
     {
-        return view('auth.menu.index');
+        return Inertia::render('Auth/Menu', [
+            'user' => 'testes'
+        ]);
     }
 
     public function save(Request $request)

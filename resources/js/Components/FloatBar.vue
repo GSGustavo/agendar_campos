@@ -7,10 +7,10 @@
                 <i class="0 ri-list-check text-3xl hover:font-black cursor-pointer transition-all duration-100 " v-bind:class="{'text-4xl': agendamentos}"></i>
             </li>
             <li>
-                <i class=" 1 ri-home-2-line text-3xl hover:font-black cursor-pointer transition-all duration-100 " ></i>
+                <i class=" 1 ri-home-2-line text-3xl hover:font-black cursor-pointer transition-all duration-100 " v-bind:class="{'text-4xl': home}"></i>
             </li>
             <li>
-                <i class="2 ri-user-line text-3xl hover:font-black cursor-pointer transition-all duration-100 " ></i>
+                <i class="2 ri-user-line text-3xl hover:font-black cursor-pointer transition-all duration-100 " v-bind:class="{'text-4xl': profile}"></i>
             </li>
         </ul>
     </nav>
@@ -23,20 +23,21 @@ export default {
     // 0 = agendamentos
     // 1 = home
     // 2 = profile
+    props: {
+        'floatbarmode': String
+    },
 
-    data() {
+    data(props) {
         return {
-            agendamentos: false,
-            home: false,
-            profile: false,
+            agendamentos: props.floatbarmode === '0' ?? false,
+            home: props.floatbarmode === '1' ?? false,
+            profile: props.floatbarmode === '2' ?? false,
         }
     },
 
-    props: {
-        'mode': String
-    },
+  
     setup(props) {
-       
+       console.log(props.floatbarmode)
     },
 
     methods() {
