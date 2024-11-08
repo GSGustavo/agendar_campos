@@ -17,6 +17,6 @@ Route::controller(MenuController::class)->group(function() {
     // Route::post("/alterar/academico", "alter")->name("academico.alterar");
 });
 
-// Route::controller(AgendamentosController::class)->group(function() {
-//     Route::get('/agendamentos', 'index')->name("auth.agendamentos.index");
-// });
+Route::controller(AgendamentosController::class)->group(function() {
+    Route::get('/agendamentos', 'index')->name("auth.agendamentos.index");
+});

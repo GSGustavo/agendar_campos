@@ -7,7 +7,7 @@ export default {
         'floatbarmode': String
     },
     setup(props) {
-        return {props}
+        return {props, Link}
     },
     components: {FloatBar}
 }
