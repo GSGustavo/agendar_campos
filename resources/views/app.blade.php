@@ -1,4 +1,4 @@
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light" class="transition-all duration-100">
 
 <head>
     <meta charSet="UTF-8" />

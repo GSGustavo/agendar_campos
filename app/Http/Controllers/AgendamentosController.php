@@ -10,6 +10,6 @@ class AgendamentosController extends Controller
 {
         public function index()
         {
-                return Inertia::render("Auth/Agendamentos");
+                return Inertia::render("Auth/Agendamentos/Listar");
         }
 }
