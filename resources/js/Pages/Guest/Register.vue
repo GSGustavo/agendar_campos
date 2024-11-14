@@ -1,15 +1,12 @@
 <script>
 
-import { Link } from '@inertiajs/vue3'
 
-export default {
 
-    components: { Link }
-}
 </script>
 
 <script setup>
     import { useForm } from '@inertiajs/vue3'
+    import { Link } from '@inertiajs/vue3'
 
     let form = useForm({
         name: '',

@@ -1,12 +1,16 @@
 <script>
-import App from '../../App.vue';
+import UserAuthLayout from '../../Shared/User/UserAuthLayout.vue';
+
+
 export default {
-    components: { App }
+    layout: UserAuthLayout
 }
 </script>
 
+<script setup>import { Link } from '@inertiajs/vue3';</script>
+
 <template>
-    <App floatbarmode="2">
+
         <div class="flex flex-col gap-10 p-10 justify-center items-center">
             <p class="text-center font-black text-2xl">
                 Perfil
@@ -105,12 +109,12 @@ export default {
                 </div>
 
                 <div class="flex justify-center">
-                    <button class="btn btn-active btn-error text-white">
+                    <Link method="post" href="/logout" as="button" class="btn btn-active btn-error text-white">
                         <i class="ri-logout-box-r-line"></i> Sair
-                    </button>
+                    </Link>
                 </div>
 
             </div>
         </div>
-    </App>
+
 </template>

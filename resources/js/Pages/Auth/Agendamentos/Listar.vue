@@ -1,16 +1,19 @@
-<script>
-import App from '../../../App.vue';
+<script setup>
+
 import Header from '../../../Components/Header.vue';
 import CardAgendamento from '../../../Components/CardAgendamento.vue';
+import UserAuthLayout from '../../../Shared/User/UserAuthLayout.vue';
 
+</script>
 
+<script>
 export default {
-    components: { App, Header, CardAgendamento }
+    layout: UserAuthLayout
 }
 </script>
 
 <template>
-    <App floatbarmode="0">
+
         <div class="flex flex-col gap-10 p-10">
             <Header>
                 <h1 class="font-black text-2xl"> Seus Agendamentos</h1>
@@ -31,5 +34,5 @@ export default {
                 <!-- agendamentos list -->
             </div>
         </div>
-    </App>
+
 </template>

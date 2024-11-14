@@ -1,6 +1,6 @@
 <script>
 import { Link } from '@inertiajs/vue3'
-import FloatBar from './Components/FloatBar.vue';
+import FloatBar from '../../Components/FloatBar.vue'
 
 export default {
     props: {
@@ -18,6 +18,6 @@ export default {
         <slot />
     </div>
     
-    <FloatBar :floatbarmode="floatbarmode "></FloatBar>
+    <FloatBar :floatbarmode="floatbarmode"></FloatBar>
     
 </template>

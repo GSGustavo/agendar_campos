@@ -49,6 +49,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('auth.menu.index');
+        return redirect()->intended(route('auth.menu.index', absolute: false));
     }
 }

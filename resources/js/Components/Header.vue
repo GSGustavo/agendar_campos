@@ -1,12 +1,7 @@
-<script>
+<script setup>
 import Select from './Select.vue';
 
-export default {
-    setup() {
 
-    },
-    components: {Select}
-}
 </script>
 
 <template>

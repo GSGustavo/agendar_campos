@@ -1,3 +1,23 @@
+<script>
+
+</script>
+
+<script setup>
+    import { useForm } from '@inertiajs/vue3'
+    import { Link } from '@inertiajs/vue3'
+
+    let form = useForm({
+        email: '',
+        password: ''
+    })
+
+    let submit = () => {
+        form.post('/login')
+    }
+</script>
+
+
+
 <template>
     <div class="flex justify-center">
         <div class="flex flex-col w-[350px] xl:w-[500px] gap-4">
@@ -11,43 +31,40 @@
                     </h3>
                 </div>
             </div>
-            <div class="">
+            <form @submit.prevent="submit">
                 <div class="">
-
-                    <div class="mb-3 flex flex-col gap-2">
-                        <label for="email" class="">
-                            Email: <span class="text-red-500">*</span>
-                        </label>
-
-                        <input type="text"
-                            class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
-                            id="email" placeholder="Ex: joaosilva@gmail.com">
-                        </input>
+                    <div class="">
+                        <div class="mb-3 flex flex-col gap-2">
+                            <label for="email" class="">
+                                Email: <span class="text-red-500">*</span>
+                            </label>
+                            <input v-model="form.email" type="text"
+                                class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
+                                id="email" name="email" placeholder="Ex: joaosilva@gmail.com">
+                            </input>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="">
                 <div class="">
-                    <div class="mb-3 flex flex-col">
-                        <label for="password" class="">Senha: <span class="text-danger ">*</span></label>
-
-                        <input type="text"
-                            class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
-                            id="password" placeholder="Ex: joaosilva@gmail.com">
-                        </input>
-
+                    <div class="">
+                        <div class="mb-3 flex flex-col">
+                            <label for="password" class="">Senha: <span class="text-danger ">*</span></label>
+                            <input v-model="form.password" type="password"
+                                class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
+                                id="password" name="password" placeholder="Sua senha">
+                            </input>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="">
-                <div class="text-center">
-
-                    <button
-                        class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
-                        Entrar
-                    </button>
+                <div class="">
+                    <div class="text-center">
+                        <button :disabled="form.processing"
+                            class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
+                            Entrar
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
 
             <div class="flex w-full flex-col border-opacity-50">
                
@@ -84,18 +101,3 @@
     </div>
 </template>
 
-<script>
-
- import { Link } from '@inertiajs/vue3'
-export default {
-   
-
-    props: {
-        'user': String
-    },
-    setup(props) {
-        console.log(props.user)
-    },
-    components: {Link}
-}
-</script>
