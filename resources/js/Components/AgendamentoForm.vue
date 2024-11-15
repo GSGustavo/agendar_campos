@@ -1,39 +1,45 @@
 <template>
-    <form method="POST" :action="url" class="flex flex-col gap-10" id="form">
-        <input v-model="dates" type="hidden" id="dates">
-        <input v-model="init_time" type="hidden" name="init_time" id="init_time">
-        <input v-model="end_time" type="hidden" name="end_time" id="end_time">
 
-        <div class="flex justify-center items-center">
-            <div class="w-[300px] flex flex-col mx-auto">
-                <p class="my-2 font-black text-center">
-                    Escolha as datas que deseja reservar:
-                </p>
-                <VueDatePicker locale="pt-br" v-model="date" placeholder="Garanta sua vaga" :multi-dates="{ limit: 3 }"
-                    :enable-time-picker="false" week-start="0" :day-names="['D', 'S', 'T', 'Q', 'Q', 'S', 'S']"
-                    @update:model-value="handleDate" select-text="Escolher" cancel-text="Fechar" />
-            </div>
-        </div>
-        <div class="justify-center items-center">
-            <div class="w-[300px] flex flex-col mx-auto">
-                <p class="my-2 font-black text-center">
-                    Escolha o horário que deseja reservar:
-                </p>
-                <VueDatePicker locale="pt-br" :start-time="startTime" v-model="time" time-picker
-                    :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário"
-                    minutes-increment="5" @update:model-value="handleTime" select-text="Escolher"
-                    cancel-text="Fechar" />
+    <div class="flex flex-col gap-5 justify-center items-center">
 
+        <ModalDisponibilidades />
+
+        <form method="POST" :action="url" class="flex flex-col gap-10 justify-center items-center" id="form">
+            <input v-model="dates" type="hidden" id="dates">
+            <input v-model="init_time" type="hidden" name="init_time" id="init_time">
+            <input v-model="end_time" type="hidden" name="end_time" id="end_time">
+
+            <div class="flex justify-center items-center">
+                <div class="w-[300px] flex flex-col mx-auto">
+                    <p class="my-2 font-black text-center">
+                        Escolha as datas que deseja reservar:
+                    </p>
+                    <VueDatePicker id="teste" locale="pt-br" v-model="date" placeholder="Garanta sua vaga"
+                        :multi-dates="{ limit: 3 }" :enable-time-picker="false" week-start="0"
+                        :day-names="['D', 'S', 'T', 'Q', 'Q', 'S', 'S']" @update:model-value="handleDate"
+                        select-text="Escolher" cancel-text="Fechar" />
+                </div>
             </div>
-        </div>
-        <div class="mx-auto">
-            <button @click.prevent="saveAgendamento" type="submit"
-                class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-green  hover:text-black font-black border-2 hover:border-black transition-all duration-100">
-                <i class="ri-calendar-line" />
-                Agendar
-            </button>
-        </div>
-    </form>
+            <div class="justify-center items-center">
+                <div class="w-[300px] flex flex-col mx-auto">
+                    <p class="my-2 font-black text-center">
+                        Escolha o horário que deseja reservar:
+                    </p>
+                    <VueDatePicker locale="pt-br" :start-time="startTime" v-model="time" time-picker
+                        :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário"
+                        minutes-increment="5" @update:model-value="handleTime" select-text="Escolher"
+                        cancel-text="Fechar" />
+                </div>
+            </div>
+            <div class="mx-auto">
+                <button @click.prevent="saveAgendamento" type="submit"
+                    class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-green  hover:text-black font-black border-2 hover:border-black transition-all duration-100">
+                    <i class="ri-calendar-line" />
+                    Agendar
+                </button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -41,11 +47,12 @@ import axios from 'axios';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
+import ModalDisponibilidades from './ModalDisponibilidades.vue';
 
 
 
 export default {
-    components: {VueDatePicker},
+    components: { VueDatePicker, ModalDisponibilidades },
     props: {
         'url': String
     },

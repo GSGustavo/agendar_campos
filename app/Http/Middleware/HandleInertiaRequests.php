@@ -42,12 +42,21 @@ class HandleInertiaRequests extends Middleware
         $formatter = new IntlDateFormatter('pt_BR', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
         $today = $formatter->format($date);
 
+        $user = null;
+
+        if (Auth::user()) {
+            $user = [];
+            $user['name'] = Auth::user()->name;
+        }
+
         return array_merge(parent::share($request), [
-            // Synchronously...
+        
             'appName' => config('app.name'),
             'appVersion' => config('app.version'),
             'today' => $today,
-            'name' => Auth::user()->name
+            'user' => $user,
+            'lastUpdate' => config("app.lastupdate"),
+            'sociallinktree' => config("app.sociallinktree")
         ]);
     }
 }

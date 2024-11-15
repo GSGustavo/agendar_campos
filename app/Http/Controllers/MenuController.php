@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agendamentos;
 use App\Models\Campos;
+use DateTime;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,9 +13,16 @@ class MenuController extends Controller
     public function index()
     {
         // Fazendo isso pro sintético ficar como primeira opção no select do menu
-        $campos = Campos::query()->orderBy("id", "asc")->get(['id', 'nome']);
+        $campos = Campos::query()
+            ->orderBy("id", "asc")
+            ->get(['id', 'nome']);
+
+
+
         $data = [
-            'campos' => $campos
+            'campos' => $campos,
+            'apigetcampo' => route("api.auth.menu.getcampo"),
+            'apigetagendamentos' => route("api.auth.menu.getagendamentos"),
         ];
 
         return Inertia::render('Auth/Menu', $data);
@@ -40,7 +48,7 @@ class MenuController extends Controller
                 'status' => 1
             ];
         }
-       
+
 
         if ($request->id != 0) {
 
@@ -72,8 +80,6 @@ class MenuController extends Controller
             foreach ($dataAgendamentos as $dataAgendamento) {
                 $saveAgendamento = Agendamentos::create($dataAgendamento);
             }
-        
-            
         }
 
         // if ($saveAgendamento) {
@@ -95,5 +101,44 @@ class MenuController extends Controller
         // }
 
         return $dataAgendamento;
+    }
+
+
+    public function getcampo(Request $request)
+    {
+        $data = [
+            'status' => false
+        ];
+
+        $campo = Campos::find($request->id);
+
+        if ($campo) {
+            $data['status'] = true;
+            $data['maps_link'] = $campo->maps_link;
+        }
+
+        return json_encode($data);
+    }
+
+    public function getagendamentos(Request $request)
+    {
+        $data = [
+            'status' => false
+        ];
+
+        $agendamentos = Agendamentos::query()
+            ->where("date", '>=', new DateTime())
+            ->where("agendamentos.status", '1')
+            ->where("agendamentos.campo_id", $request->id)
+            ->leftJoin('campos', 'campos.id', '=', 'agendamentos.campo_id')
+            ->get(['agendamentos.id', 'agendamentos.init_time', 'agendamentos.end_time', 'agendamentos.date', 'campos.nome as campo_nome']);
+
+        if ($agendamentos) {
+            $data['status'] = true;
+            $data['agendamentos'] = $agendamentos;
+        }
+
+
+        return json_encode($data);
     }
 }
