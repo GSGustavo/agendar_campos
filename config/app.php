@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'version' => env('APP_VERSION', '1.0.0'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -52,7 +53,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://agendarcampos.com'),
 
     /*
     |--------------------------------------------------------------------------

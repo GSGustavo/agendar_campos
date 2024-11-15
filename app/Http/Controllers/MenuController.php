@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agendamentos;
+use App\Models\Campos;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,9 +11,13 @@ class MenuController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Auth/Menu', [
-            'user' => 'testes'
-        ]);
+        // Fazendo isso pro sintético ficar como primeira opção no select do menu
+        $campos = Campos::query()->orderBy("id", "asc")->get(['id', 'nome']);
+        $data = [
+            'campos' => $campos
+        ];
+
+        return Inertia::render('Auth/Menu', $data);
     }
 
     public function save(Request $request)

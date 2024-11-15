@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use IntlDateFormatter;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -35,14 +38,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $date = new DateTime();
+        $formatter = new IntlDateFormatter('pt_BR', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $today = $formatter->format($date);
+
         return array_merge(parent::share($request), [
             // Synchronously...
             'appName' => config('app.name'),
-
-            // Lazily...
-            // 'auth.user' => fn () => $request->user()
-            //     ? $request->user()->only('id', 'name', 'email')
-            //     : null,
+            'appVersion' => config('app.version'),
+            'today' => $today,
+            'name' => Auth::user()->name
         ]);
     }
 }
