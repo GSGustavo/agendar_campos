@@ -3,6 +3,7 @@ import UserAuthLayout from '../../Shared/User/UserAuthLayout.vue';
 import AgendamentoForm from '../../Components/AgendamentoForm.vue';
 import Header from '../../Components/Header.vue';
 import Select from '../../Components/Select.vue';
+import ModalDisponibilidades from '../../Components/ModalDisponibilidades.vue';
 </script>
 
 <script>
@@ -16,7 +17,7 @@ export default {
 <template>
     <div class="flex flex-col gap-10 p-10">
         <Header>
-            <Select />
+            <ModalDisponibilidades />
         </Header>
 
 

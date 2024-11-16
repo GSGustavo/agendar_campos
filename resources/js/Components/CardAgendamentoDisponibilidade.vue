@@ -3,7 +3,7 @@
         <div class="flex flex-col gap-1 text-md">
             <span :class="(mode === '0' ? 'line-through' : '')">{{ campo }}</span>
             <p :class="'font-black ' + (mode === '0' ? 'line-through' : '')">
-                {{ dates }} ({{ init_time }} - {{ end_time }})
+                {{ date }} ({{ init_time }} - {{ end_time }})
             </p>
         </div>
 
@@ -22,16 +22,15 @@ export default {
 
     data() {
         return {
-            dates: '',
+            date: '',
             init_time: '',
             end_time: ''
         }
     },
     props: {
         mode: String,
-        initTime: String,
-        endTime: String,
-        date: String,
+        startOn: String,
+        endOn: String,
         campo: String
 
     },
@@ -40,15 +39,20 @@ export default {
     },
     methods: {
         fixDateAndTime() {
-            const splitDate = this.date.split('-')
-            this.dates = `${splitDate[2]}/${splitDate[1]}/${splitDate[0]}`;
 
+            // Pegando a data e o horário inicial
+            const splitStartOn = this.startOn.split(' ')
+            const date = splitStartOn[0].split('-')
+            this.date = `${date[2]}/${date[1]}/${date[0]}`;
 
-            const splitInitTime = this.initTime.split(":")
-            this.init_time = `${splitInitTime[0]}:${splitInitTime[1]}`
+            const init_time = splitStartOn[1].split(':')
+            this.init_time = `${init_time[0]}:${init_time[1]}`
 
-             const splitEndTime = this.endTime.split(":")
-            this.end_time = `${splitEndTime[0]}:${splitEndTime[1]}`
+            // Pegando horário final
+            const splitEndOn = this.endOn.split(' ')
+
+            const end_time = splitEndOn[1].split(':')
+            this.end_time = `${end_time[0]}:${end_time[1]}`
 
         },
     },

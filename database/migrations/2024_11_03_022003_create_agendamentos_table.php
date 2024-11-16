@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('campo_id')->constrained();
 
 
-            $table->datetimes('start_on');
-            $table->datetimes("end_on");
+            $table->timestamp('start_on');
+            $table->timestamp("end_on");
 
             // $table->date("date");
             // $table->time("init_time");

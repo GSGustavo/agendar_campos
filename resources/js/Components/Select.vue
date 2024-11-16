@@ -48,10 +48,7 @@ export default {
 
 <template>
     <label class="form-control w-full max-w-xs">
-        <div class="label">
-            <span class="label-text">Campo:</span>
-
-        </div>
+    
         <select :data-url="$page.props.apigetcampo" v-on:change="changeCampo" id="campo_id"
             class="select select-bordered w-full max-w-xs">
 

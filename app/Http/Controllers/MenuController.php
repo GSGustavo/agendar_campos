@@ -6,6 +6,8 @@ use App\Models\Agendamentos;
 use App\Models\Campos;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MenuController extends Controller
@@ -31,30 +33,73 @@ class MenuController extends Controller
     public function save(Request $request)
     {
 
+        // erros
+        // 0 = erro de servidor
+        // 1 = sem disponibilidade
+        $data = [
+            'status' => false,
+            'error' => 0
+        ];
+
         $operationLog = 0;
         $dataBeforeLog = null;
-        $agendamento = new Agendamentos();
+        // $agendamento = new Agendamentos();
         $status = false; // Caiu na validação do status?
 
-        $dataAgendamentos = [];
+        // Tentando achar um agendamento com base no que foi enviado via request
+        $campoId = $request->campo_id; // ID do campo
+        $startOn = Carbon::parse($request->start_on); // Converte para um objeto Carbon
+        $endOn = Carbon::parse($request->end_on); // Converte para um objeto Carbon
 
-        foreach (json_decode($request->dates) as $date) {
-            $dataAgendamentos[] = [
-                'user_id' => 1,
-                'campo_id' => 1,
-                'date' => $date,
-                'init_time' => $request->init_time,
-                'end_time' => $request->end_time,
-                'status' => 1
+
+        // // SELECT *
+        // // FROM agendamentos
+        // // WHERE campo_id = :campo_id
+        // //   AND status = 1
+        // //   AND (
+        // //         :start_on < end_on
+        // //     AND :end_on > start_on
+        // //       );
+
+        $conflito = Agendamentos::where('campo_id', $campoId)
+            ->where('status', 1)
+            ->where(function ($query) use ($startOn, $endOn) {
+                $query->where(function ($q) use ($startOn, $endOn) {
+                    // Verifica sobreposição
+                    $q->where('start_on', '<', $endOn)
+                        ->where('end_on', '>', $startOn);
+                });
+            })
+            ->exists();
+
+        // Vai cair no if abaixo caso a data e o horário estiver livre
+        if (!$conflito) {
+            
+            $dataAgendamento = [
+                'start_on' => $startOn,
+                'end_on' => $endOn,
+                'campo_id' => $campoId,
+                'user_id' => Auth::user()->id
             ];
 
-//             select * from agendamentos
-// where date = '2024-11-26'
-// and '21:00' > init_time
-// and '21:00' < end_time 
-// or  init_time < '23:00'
+            $saveAgendamento = false;
 
+            if ($request->id != 0) {
+                // $saveAgendamento = $agendamento->update($dataAgendamento);
+
+            } else {
+
+                $saveAgendamento = Agendamentos::create($dataAgendamento);
+            }
+
+            if ($saveAgendamento) {
+                $data['status'] = true;
+            }
+        } else {
+            $data['error'] = 1;
         }
+
+
 
 
         if ($request->id != 0) {
@@ -79,15 +124,7 @@ class MenuController extends Controller
             // }
         }
 
-        $saveAgendamento = false;
 
-        if ($request->id != 0) {
-            // $saveAgendamento = $agendamento->update($dataAgendamento);
-        } else {
-            foreach ($dataAgendamentos as $dataAgendamento) {
-                $saveAgendamento = Agendamentos::create($dataAgendamento);
-            }
-        }
 
         // if ($saveAgendamento) {
         //     $mensagem = "Mensalidade salva com sucesso!";
@@ -107,7 +144,7 @@ class MenuController extends Controller
         //     ]);
         // }
 
-        return $dataAgendamento;
+        return json_encode($data);
     }
 
 
@@ -134,11 +171,11 @@ class MenuController extends Controller
         ];
 
         $agendamentos = Agendamentos::query()
-            ->where("date", '>=', new DateTime())
+            ->where("start_on", '>=', new DateTime())
             ->where("agendamentos.status", '1')
             ->where("agendamentos.campo_id", $request->id)
             ->leftJoin('campos', 'campos.id', '=', 'agendamentos.campo_id')
-            ->get(['agendamentos.id', 'agendamentos.init_time', 'agendamentos.end_time', 'agendamentos.date', 'campos.nome as campo_nome']);
+            ->get(['agendamentos.id', 'agendamentos.start_on', 'agendamentos.end_on', 'campos.nome as campo_nome']);
 
         if ($agendamentos) {
             $data['status'] = true;
