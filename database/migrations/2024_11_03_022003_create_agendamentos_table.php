@@ -15,9 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('campo_id')->constrained();
-            $table->date("date");
-            $table->time("init_time");
-            $table->time("end_time");
+
+
+            $table->datetimes('start_on');
+            $table->datetimes("end_on");
+
+            // $table->date("date");
+            // $table->time("init_time");
+            // $table->time("end_time");
+
+
             $table->integer("status")->default("1"); // 0 desativado / 1 ativo
             $table->timestamps();
         });

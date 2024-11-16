@@ -8,12 +8,12 @@
     <dialog id="disponibilidade" class="modal">
         <div class="modal-box">
             <div class="flex flex-col gap-4">
-                <label class="form-control w-full max-w-xs">
+                <label class="form-control w-full">
                     <div class="label">
-                        <span class="label-text">Campo:</span>
+                        <span class="label-text text-center">Campo:</span>
                     </div>
                     <select :data-url="$page.props.apigetagendamentos" v-on:change="getAgendamentos" id="agendamento_campoid"
-                        class="select select-bordered w-full max-w-xs">
+                        class="select select-bordered w-full ">
                         <option v-for=" campo in $page.props.campos " :value="campo.id" :key="campo.id">
                             {{ campo.nome }}
                         </option>

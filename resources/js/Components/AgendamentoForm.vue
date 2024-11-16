@@ -149,3 +149,8 @@ export default {
 
 <!-- Usar isso caso tenha alguma manutenção no campo por exemplo: -->
 <!-- https://vue3datepicker.com/slots/content/#marker -->
+
+
+
+<!-- toasts -->
+<!-- https://buefy.org/ -->

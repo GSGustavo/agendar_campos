@@ -47,6 +47,13 @@ class MenuController extends Controller
                 'end_time' => $request->end_time,
                 'status' => 1
             ];
+
+//             select * from agendamentos
+// where date = '2024-11-26'
+// and '21:00' > init_time
+// and '21:00' < end_time 
+// or  init_time < '23:00'
+
         }
 
 
