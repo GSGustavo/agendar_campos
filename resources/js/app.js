@@ -2,24 +2,33 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 
 import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
+import { createVuetify, useTheme } from 'vuetify'
+// import { VSnackbar } from 'vuetify/components/VSnackbar'
+// import * as components from 'vuetify/components'
+
+
 import * as directives from 'vuetify/directives'
+import { VSnackbar } from 'vuetify/components/VSnackbar'
 
 const vuetify = createVuetify({
-  components,
-  directives,
+    // components,
+    VSnackbar,
+    theme: {
+        isDisabled: true
+    },
+    directives
 })
+
 createInertiaApp({
-  resolve: name => {
-    const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-    return pages[`./Pages/${name}.vue`]
-  },
-  setup({ el, App, props, plugin }) {
-    createApp({ render: () => h(App, props) })
-      .use(plugin).use(vuetify)
-      .mount(el)
-  },
+    resolve: name => {
+        const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+        return pages[`./Pages/${name}.vue`]
+    },
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin).use(vuetify)
+            .mount(el)
+    },
 })
 
 

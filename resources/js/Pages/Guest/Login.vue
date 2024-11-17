@@ -3,17 +3,17 @@
 </script>
 
 <script setup>
-    import { useForm } from '@inertiajs/vue3'
-    import { Link } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 
-    let form = useForm({
-        email: '',
-        password: ''
-    })
+let form = useForm({
+    email: '',
+    password: ''
+})
 
-    let submit = () => {
-        form.post('/login')
-    }
+let submit = () => {
+    form.post('/login')
+}
 </script>
 
 
@@ -35,31 +35,40 @@
                 <div class="">
                     <div class="">
                         <div class="mb-3 flex flex-col gap-2">
-                            <label for="email" class="">
-                                Email: <span class="text-red-500">*</span>
+
+                            <div class="label">
+                                <span class="label-text font-black">Email: <span class="text-red-500">*</span> </span>
+                            </div>
+                            <label class="input input-bordered flex items-center gap-2">
+
+                                <input type="text" v-model="form.email" class="grow" id="email" name="email"
+                                    placeholder="Ex.: joaosilva@gmail.com" />
                             </label>
-                            <input v-model="form.email" type="text"
-                                class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
-                                id="email" name="email" placeholder="Ex: joaosilva@gmail.com">
-                            </input>
+
+
                         </div>
                     </div>
                 </div>
                 <div class="">
                     <div class="">
                         <div class="mb-3 flex flex-col">
-                            <label for="password" class="">Senha: <span class="text-danger ">*</span></label>
-                            <input v-model="form.password" type="password"
-                                class="focus:border-b-5 border-2 p-2 focus:border-primary border-black transition-all duration-150 rounded-[10px]"
-                                id="password" name="password" placeholder="Sua senha">
-                            </input>
+                            <div class="label">
+                                <span class="label-text font-black">Senha: <span class="text-red-500">*</span> </span>
+                            </div>
+                            <label class="input input-bordered flex items-center gap-2">
+
+                                <input type="password" v-model="form.password" class="grow"  id="password" name="password"
+                                    placeholder="Sua senha" />
+                            </label>
+
+                           
                         </div>
                     </div>
                 </div>
                 <div class="">
                     <div class="text-center">
                         <button :disabled="form.processing"
-                            class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
+                            class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-primary font-black border-2 hover:border-black transition-all duration-100">
                             Entrar
                         </button>
                     </div>
@@ -67,9 +76,9 @@
             </form>
 
             <div class="flex w-full flex-col border-opacity-50">
-               
+
                 <div class="divider">Ou</div>
-                
+
             </div>
 
             <div class="flex flex-col gap-4">
@@ -77,8 +86,8 @@
 
                     <Link as="button" href="/register"
                         class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
-                        Crie sua conta
-                </Link>
+                    Crie sua conta
+                    </Link>
                 </div>
             </div>
 
@@ -100,4 +109,3 @@
         </div>
     </div>
 </template>
-

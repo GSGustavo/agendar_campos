@@ -45,7 +45,11 @@ export default {
                     <div class="label">
                         <span class="label-text font-black">Nome: <span class="text-red-500">*</span> </span>
                     </div>
-                    <input type="text" placeholder="Ex.: João" class="input input-bordered w-full" />
+                    <label class="input input-bordered flex items-center gap-2">
+
+
+<input type="text" class="grow" placeholder="Ex.: João" />
+</label>
 
                 </label>
                 <label class="form-control">
@@ -53,7 +57,9 @@ export default {
                         <span class="label-text font-black">Sobrenome: <span class="text-red-500">*</span> </span>
 
                     </div>
-                    <input type="text" placeholder="Ex.: da Silva" class="input input-bordered w-full" />
+                    <label class="input input-bordered flex items-center gap-2">
+<input type="text" class="grow" placeholder="Ex.: da Silva" />
+</label>
 
                 </label>
                 <div>

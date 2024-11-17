@@ -8,7 +8,8 @@ import UserAuthLayout from '../../../Shared/User/UserAuthLayout.vue';
 
 <script>
 export default {
-    layout: UserAuthLayout
+    layout: UserAuthLayout,
+   
 }
 </script>
 
@@ -26,10 +27,8 @@ export default {
 
                 <!-- agendamentos list -->
                 <div class="flex flex-col gap-5">
-                    <CardAgendamento mode="1"/>
-                    <CardAgendamento mode="1"/>
-                    <CardAgendamento mode="1"/>
-                    <CardAgendamento mode="1"/>
+                    <CardAgendamento v-for="agendamento in $page.props.agendamentos"/>
+                 
                 </div>
                 <!-- agendamentos list -->
             </div>
