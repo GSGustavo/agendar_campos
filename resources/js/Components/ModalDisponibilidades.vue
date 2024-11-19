@@ -1,46 +1,45 @@
 <template>
-    <button
-        class=" bg-primary items-center justify-center flex gap-4 text-white py-2 px-5 rounded-[10px] hover:bg-green  hover:text-black font-black border-2 hover:border-black transition-all duration-100"
-        onclick="disponibilidade.showModal()">
-        <i class="ri-calendar-line"></i>
-        Disponibilidades
-    </button>
-    <dialog id="disponibilidade" class="modal">
-        <div class="modal-box">
-            <div class="flex flex-col gap-4">
-                <label class="form-control w-full">
+
+    <v-dialog max-width="500">
+
+
+        <template  v-slot:activator="{ props: activatorProps }">
+            <v-btn v-bind="activatorProps" :color="isHovering ? 'success' : 'primary'">
+                        <i class="ri-calendar-line"></i>
+                        Disponibilidades
+                    </v-btn>
+        </template>
+
+        <template v-slot:default="{ isActive }">
+            <v-card>
+
+                <v-card-text>
+                    <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text text-center">Campo:</span>
                     </div>
-                    <select :data-url="$page.props.apigetagendamentos" v-on:change="getAgendamentos" id="agendamento_campoid"
-                        class="select select-bordered w-full ">
+                    <select :data-url="$page.props.apigetagendamentos" v-on:change="getAgendamentos"
+                        id="agendamento_campoid" class="select select-bordered w-full ">
                         <option v-for=" campo in $page.props.campos " :value="campo.id" :key="campo.id">
                             {{ campo.nome }}
                         </option>
                     </select>
                 </label>
                 <div class="flex flex-col gap-2">
-                    <CardAgendamentoDisponibilidade
-                    :key="agendamento.id"
-                    v-for=" agendamento in agendamentos "
-                    :campo="agendamento.campo_nome"
-                    :startOn="agendamento.start_on"
-                    :endOn="agendamento.end_on"/>
+                    <CardAgendamentoDisponibilidade :key="agendamento.id" v-for=" agendamento in agendamentos "
+                        :campo="agendamento.campo_nome" :startOn="agendamento.start_on" :endOn="agendamento.end_on" />
                 </div>
-            </div>
+                </v-card-text>
 
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn-error class="m-4" text="Fechar" @click="isActive.value = false"></v-btn-error>
+                </v-card-actions>
+            </v-card>
+        </template>
+    </v-dialog>
 
-
-
-
-            <div class="modal-action">
-                <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
-                    <button class="btn btn-error text-white">Fechar</button>
-                </form>
-            </div>
-        </div>
-    </dialog>
+   
 </template>
 
 <script>
@@ -54,46 +53,46 @@ export default {
             agendamentos: {}
         }
     },
-    
+
     setup() {
 
         return {
 
             // Função chamada toda vez que se muda o valor do select do campo
-            
+
         }
     },
     methods: {
         getAgendamentos(e) {
-                // console.log(e.target.dataset.url)
-                axios.post(
-                    e.target.dataset.url,
-                    {
-                        'id': e.target.value
+            // console.log(e.target.dataset.url)
+            axios.post(
+                e.target.dataset.url,
+                {
+                    'id': e.target.value
+                }
+            ).then((response) => {
+                if (response.status === 200) {
+                    if (response.data.status) {
+                        this.agendamentos = response.data.agendamentos
+                        // this.$forceUpdate();
                     }
-                ).then((response) => {
-                    if (response.status === 200) {
-                        if (response.data.status) {
-                            this.agendamentos = response.data.agendamentos
-                            // this.$forceUpdate();
-                        }
-                        
-                    }
-                })
-            }
+
+                }
+            })
+        }
     },
     mounted() {
         // Fazendo isso para pegar o valor selecionado no select quand o elemento for montado
-        this.getAgendamentos({
-            target: {
+        // this.getAgendamentos({
+        //     target: {
 
-                dataset: {
-                    url: document.getElementById("agendamento_campoid").dataset.url,
-                },
-                value: document.getElementById("agendamento_campoid").value
-            }
-        })
+        //         dataset: {
+        //             url: document.getElementById("agendamento_campoid").dataset.url,
+        //         },
+        //         value: document.getElementById("agendamento_campoid").value
+        //     }
+        // })
     },
-    components: {CardAgendamentoDisponibilidade},
+    components: { CardAgendamentoDisponibilidade },
 }
 </script>

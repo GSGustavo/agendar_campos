@@ -2,14 +2,9 @@
 
     <div class="flex flex-col gap-5 justify-center items-center">
 
-
-
-
-
         <form method="POST" :action="url" class="flex flex-col gap-10 justify-center items-center" id="form">
             <input v-model="start_on" type="hidden" id="start_on" name="start_on">
             <input v-model="end_on" type="hidden" id="end_on" name="end_on">
-
 
             <div class="flex justify-center items-center">
                 <div class="w-[300px] flex flex-col mx-auto">
@@ -26,6 +21,7 @@
                     <p class="my-2 font-black">
                         Escolha as datas que deseja reservar:
                     </p>
+
                     <VueDatePicker ref="datepicker" id="teste" locale="pt-br" v-model="date"
                         placeholder="Garanta sua vaga" :multi-dates="{ limit: 1 }" :enable-time-picker="false"
                         week-start="0" :day-names="['D', 'S', 'T', 'Q', 'Q', 'S', 'S']" @update:model-value="handleDate"
@@ -37,6 +33,7 @@
                     <p class="my-2 font-black">
                         Escolha o horário que deseja reservar:
                     </p>
+
                     <VueDatePicker locale="pt-br" :start-time="startTime" v-model="time" time-picker
                         :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário"
                         minutes-increment="5" @update:model-value="handleTime" select-text="Escolher"
@@ -49,21 +46,6 @@
                     <i class="ri-calendar-line" />
                     Agendar
                 </button>
-                <div class="text-center">
-                    <!-- <v-btn color="red-darken-2" @click="snackbar = true">
-                        Open Snackbar
-                    </v-btn>
-
-                    <v-snackbar v-model="snackbar" multi-line>
-                        {{ text }}
-
-                        <template v-slot:actions>
-                            <v-btn color="red" variant="text" @click="snackbar = false">
-                                Close
-                            </v-btn>
-                        </template>
-</v-snackbar> -->
-                </div>
             </div>
         </form>
         <v-snackbar :timeout="5000" elevation="50" :color="snackColor" v-model="snackbar">
@@ -121,12 +103,8 @@ export default {
         }
     },
 
-
     methods: {
-
         saveAgendamento() {
-            
-            
             if (this.dates && this.init_time && this.end_time) {
                 axios.post($("#form").attr("action"),
                     {
@@ -135,34 +113,24 @@ export default {
                         end_on: `${this.dates[0]} ${this.end_time}`
                     }
                 ).then((response) => {
-
-
                     if (response.data.status) {
                         this.snackText = 'Agendamento efetuado com sucesso!'
                         this.snackColor = 'green'
-
                         // this.datepicker.value.clearValue()
-
-
                     } else {
                         this.snackText = 'Houve um erro, tente novamente mais tarde!'
-            this.snackColor = 'red'
+                        this.snackColor = 'red'
 
                         if (response.data.error === 1) {
                             this.snackText = 'Sem disponibilidade!'
-                        } 
+                        }
                     }
                 })
             } else {
                 this.snackText = 'Preencha todos os campos!'
                 this.snackColor = 'red'
-
-
             }
-
             this.snackbar = true
-
-
         },
         handleDate(modelData) {
             let datesJson = modelData
@@ -198,14 +166,12 @@ export default {
                 modelDataInit = `${initHour}:${initMinutes}`
                 modelDataEnd = `${endHour}:${endMinutes}`
             }
-
+            
             this.init_time = modelDataInit
             this.end_time = modelDataEnd
-
         }
     }
 }
-
 
 </script>
 

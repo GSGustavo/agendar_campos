@@ -1,24 +1,23 @@
 <script>
 import axios from 'axios';
+import { usePage } from '@inertiajs/vue3';
 
 export default {
     data() {
         return {
-            teste: '',
-
+            selected: 1
         }
     },
     setup() {
-
         return {
-
+            
             // Função chamada toda vez que se muda o valor do select do campo
             changeCampo(e) {
                 // console.log(e.target.dataset.url)
                 axios.post(
                     e.target.dataset.url,
                     {
-                        'id': e.target.value
+                        'id': this.selected
                     }
                 ).then((response) => {
                     if (response.status === 200) {
@@ -36,11 +35,24 @@ export default {
             target: {
 
                 dataset: {
-                    url: document.getElementById("campo_id").dataset.url,
+                    url: usePage().props.apigetcampo,
                 },
-                value: document.getElementById("campo_id").value
+                value: this.selected
             }
         })
+    },
+    watch: {
+        selected() {
+            this.changeCampo({
+                target: {
+
+                    dataset: {
+                        url: usePage().props.apigetcampo,
+                    },
+                    value: this.selected
+                }
+            })
+        }
     },
     components: {},
 }
@@ -48,14 +60,8 @@ export default {
 
 <template>
     <label class="form-control w-full max-w-xs">
-    
-        <select :data-url="$page.props.apigetcampo" v-on:change="changeCampo" id="campo_id"
-            class="select select-bordered w-full max-w-xs">
-
-            <option v-for=" campo in $page.props.campos " :value="campo.id" :key="campo.id">
-                {{ campo.nome }}
-            </option>
-        </select>
+        <v-select :thickness="3" :data-url="$page.props.apigetcampo" v-model="selected" :items="$page.props.campos" id="campo_id"
+            item-title="nome" v-on:change="changeCampo" item-value="id" variant="outlined"></v-select>
     </label>
 
 </template>

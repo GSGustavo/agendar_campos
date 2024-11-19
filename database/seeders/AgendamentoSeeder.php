@@ -21,7 +21,7 @@ class AgendamentoSeeder extends Seeder
                 'user_id' => 1,
                 'campo_id' => 1,
                 'created_at' => '2024-09-28 22:00:00',
-                'updated_at' => '2024-09-28 22:00:00'
+                'updated_at' => '2024-09-28 22:00:00',
             ]);
         }
         

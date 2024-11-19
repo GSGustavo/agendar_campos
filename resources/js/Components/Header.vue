@@ -6,47 +6,47 @@ import { Link } from '@inertiajs/vue3';
 <template>
     <div class="flex flex-col gap-4 justify-center items-center">
         <div class="">
-            <button class="badge badge-info gap-2 text-white p-3" onclick="about.showModal()">Sobre</button>
-            <dialog id="about" class="modal">
-                <div class="modal-box">
-                    <h3 class="text-lg font-bold text-center">Sobre o projeto!</h3>
 
-                    <div class=" my-4 flex flex-col gap-2">
-                        <p class="">Versão: {{ $page.props.appVersion }}</p>
-                        <p class="">Última Atualização: {{ $page.props.lastUpdate }}</p>
-                        <p class="">Desenvolvido por: <a class="underline" target="_blank"
-                                :href="$page.props.sociallinktree">Gustavo Gonzaga</a></p>
-                        <div class="flex w-full flex-col border-opacity-50">
+            <v-dialog max-width="500">
+                <template v-slot:activator="{ props: activatorProps }">
+                    <v-btn-info v-bind="activatorProps" text="Sobre"></v-btn-info>
+                </template>
 
-                            <div class="divider">Doe</div>
+                <template v-slot:default="{ isActive }">
+                    <v-card>
+                        
+                        <v-card-text>
+                            <h3 class="text-lg font-bold text-center">Sobre o projeto!</h3>
+                            <div class=" my-4 flex flex-col gap-8">
+                                <div class="flex flex-col gap-2">
+                                    <p class="">Versão: {{ $page.props.appVersion }}</p>
+                                    <p class="">Última Atualização: {{ $page.props.lastUpdate }}</p>
+                                    <p class="">Desenvolvido por: <a class="underline" target="_blank"
+                                            :href="$page.props.sociallinktree">Gustavo Gonzaga</a></p>
+                                </div>
+                            
 
-                        </div>
-                        <p class="text-center">Para o projeto continuar ativo e atualizado, faça sua doação:</p>
-                        <div class="my-5 flex gap-2 items-center justify-center">
-                            <a class="badge badge-success text-white p-5 text-xl font-black" href="">
-                                R$1
-                            </a>
-                            <a class="badge badge-success text-white p-5 text-xl font-black" href="">
-                                R$2
-                            </a>
-                            <a class="badge badge-success text-white p-5 text-xl font-black" href="">
-                                R$5
-                            </a>
-                            <a class="badge badge-success text-white p-5 text-xl font-black" href="">
-                                R$10
-                            </a>
-                        </div>
-                    </div>
+                                    <v-divider class="border-opacity-100" :thickness="3" color="primary">Doe</v-divider>
 
+                              
+                                <p class="text-center">Para o projeto continuar ativo e atualizado, faça sua doação:</p>
+                                <div class="my-5 flex gap-2 items-center justify-center">
+                                    <v-btn-doe target="_blank" href="https://google.com">R$1</v-btn-doe>
+                                    <v-btn-doe target="_blank" href="https://google.com">R$2</v-btn-doe>
+                                    <v-btn-doe target="_blank" href="https://google.com">R$5</v-btn-doe>
+                                    <v-btn-doe target="_blank" href="https://google.com">R$10</v-btn-doe>
+                                </div>
+                            </div>
+                        </v-card-text>
 
-                    <div class="modal-action">
-                        <form method="dialog">
-                            <!-- if there is a button in form, it will close the modal -->
-                            <button class="btn btn-error text-white">Fechar</button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn-error  class="m-4"  text="Fechar" @click="isActive.value = false"></v-btn-error>
+                        </v-card-actions>
+                    </v-card>
+                </template>
+            </v-dialog>
         </div>
         <div class="mb-5">
             <p class="text-center">{{ $page.props.today }}</p>

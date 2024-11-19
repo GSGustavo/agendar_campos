@@ -1,22 +1,59 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 
+// import 'vuetify/styles'
 import 'vuetify/styles'
 import { createVuetify, useTheme } from 'vuetify'
-// import { VSnackbar } from 'vuetify/components/VSnackbar'
-// import * as components from 'vuetify/components'
-
-
+import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { VSnackbar } from 'vuetify/components/VSnackbar'
+
+import { VBtn } from 'vuetify/components'
+import colors from 'vuetify/util/colors'
 
 const vuetify = createVuetify({
-    // components,
-    VSnackbar,
+    components,
     theme: {
-        isDisabled: true
+        defaultTheme: 'light',
+        themes: {
+            light: {
+                dark: false,
+                colors: {
+                    primary: '#000000',
+                    error: colors.red.base,
+                    info: colors.blue.base,
+                    success: colors.green.base
+                }
+            }
+        },
     },
-    directives
+    directives,
+    aliases: {
+        VBtnError: VBtn,
+        VBtnInfo: VBtn,
+        VBtnDoe: VBtn
+    },
+    defaults: {
+        VBtn: {
+            color: 'primary',
+            variant: 'flat',
+            rounded: 'lg'
+        },
+        VBtnError: {
+            rounded: true,
+            variant: 'flat',
+            color: 'error'
+        },
+        VBtnInfo: {
+            rounded: true,
+            variant: 'flat',
+            color: 'info',
+        },
+        VBtnDoe: {
+            variant: 'flat',
+            color: 'success',
+            
+        },
+    },
 })
 
 createInertiaApp({
@@ -26,38 +63,8 @@ createInertiaApp({
     },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
-            .use(plugin).use(vuetify)
+            .use(plugin)
+            .use(vuetify)
             .mount(el)
     },
 })
-
-
-
-
-
-
-
-// import './bootstrap';
-
-// import { createApp } from 'vue'
-
-// import VueDatePicker from '@vuepic/vue-datepicker';
-// import '@vuepic/vue-datepicker/dist/main.css'
-
-// // Imports
-// import Counter from './Components/Counter.vue'
-// import AgendamentoForm from './Components/AgendamentoForm.vue';
-// import FloatBar from './Components/FloatBar.vue';
-// // Imports
-
-// const app = createApp({})
-
-// // Registers
-// app.component('VueDatePicker', VueDatePicker)
-// app.component('Counter', Counter)
-// app.component('FloatBar', FloatBar)
-// app.component("AgendamentoForm", AgendamentoForm)
-
-// // Registers
-
-// app.mount('#app')
