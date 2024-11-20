@@ -21,7 +21,8 @@ const vuetify = createVuetify({
                     primary: '#000000',
                     error: colors.red.base,
                     info: colors.blue.base,
-                    success: colors.green.base
+                    success: colors.green.base,
+                    disabled: colors.grey.base,
                 }
             }
         },
@@ -30,11 +31,12 @@ const vuetify = createVuetify({
     aliases: {
         VBtnError: VBtn,
         VBtnInfo: VBtn,
-        VBtnDoe: VBtn
+        VBtnDoe: VBtn,
+        VBtnDisabled: VBtn
     },
     defaults: {
         VBtn: {
-            color: 'primary',
+            color: 'none',
             variant: 'flat',
             rounded: 'lg'
         },
@@ -47,6 +49,11 @@ const vuetify = createVuetify({
             rounded: true,
             variant: 'flat',
             color: 'info',
+        },
+        VBtnDisabled: {
+            rounded: true,
+            variant: 'flat',
+            color: 'disabled'
         },
         VBtnDoe: {
             variant: 'flat',

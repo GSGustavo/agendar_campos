@@ -43,7 +43,7 @@ class MenuController extends Controller
 
         $operationLog = 0;
         $dataBeforeLog = null;
-        // $agendamento = new Agendamentos();
+        $agendamento = new Agendamentos();
         $status = false; // Caiu na validação do status?
 
         // Tentando achar um agendamento com base no que foi enviado via request
@@ -69,8 +69,15 @@ class MenuController extends Controller
                     $q->where('start_on', '<', $endOn)
                         ->where('end_on', '>', $startOn);
                 });
-            })
-            ->exists();
+            });
+        
+        // Esse if é para quando vai editar, e talvez na consulta fique só o próprio agendamento que a pessoa esta editando, ai para evitar
+        // do conflito vir como true, tiramos o id do agendamento que a pessoa esta editando
+        if ($request->id) {
+            $conflito = $conflito->where("id", '<>', $request->id);
+        }
+
+        $conflito = $conflito->exists();
 
         // Vai cair no if abaixo caso a data e o horário estiver livre
         if (!$conflito) {
@@ -85,7 +92,12 @@ class MenuController extends Controller
             $saveAgendamento = false;
 
             if ($request->id != 0) {
-                // $saveAgendamento = $agendamento->update($dataAgendamento);
+                $dataAgendamento['id'] = $request->id;
+                $agendamento = Agendamentos::find($request->id);
+
+                $saveAgendamento = $agendamento->update($dataAgendamento);
+
+           
 
             } else {
 
@@ -143,6 +155,28 @@ class MenuController extends Controller
         //         "after" => json_encode($dataAgendamento)
         //     ]);
         // }
+
+        return json_encode($data);
+    }
+
+    public function destroy(Request $request)
+    {
+        $data = [
+            'status' => false
+        ];
+
+        $agendamento = Agendamentos::find($request->id);
+
+        if ($agendamento) {
+            $dataAgendamento['id'] = $request->id;
+            $dataAgendamento['status'] = 0;
+
+            $saveAgendamento = $agendamento->update($dataAgendamento);
+
+            if ($saveAgendamento) {
+                $data['status'] = true;
+            }
+        }
 
         return json_encode($data);
     }

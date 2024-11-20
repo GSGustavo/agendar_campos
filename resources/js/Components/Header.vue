@@ -9,7 +9,7 @@ import { Link } from '@inertiajs/vue3';
 
             <v-dialog max-width="500">
                 <template v-slot:activator="{ props: activatorProps }">
-                    <v-btn-info v-bind="activatorProps" text="Sobre"></v-btn-info>
+                    <v-btn-info class="flex justify-between" v-bind="activatorProps" ><i class="ri-information-line text-white"></i> Sobre</v-btn-info>
                 </template>
 
                 <template v-slot:default="{ isActive }">

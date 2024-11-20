@@ -14,7 +14,7 @@ Route::controller(MenuController::class)->group(function() {
 
     // POST
     Route::post("/menu/agendamento/save", "save")->name("menu.agendamento.save");
-    // Route::post("/alterar/academico", "alter")->name("academico.alterar");
+    Route::post("/menu/agendamento/destroy", "destroy")->name("menu.agendamento.destroy");
 });
 
 Route::controller(AgendamentosController::class)->group(function() {
