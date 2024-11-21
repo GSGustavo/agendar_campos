@@ -30,7 +30,7 @@ export default {
         }
     },
     mounted() {
-        // Fazendo isso para pegar o valor selecionado no select quand o elemento for montado
+        // Fazendo isso para pegar o valor selecionado no select quando o elemento for montado
         this.changeCampo({
             target: {
 

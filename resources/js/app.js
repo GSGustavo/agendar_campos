@@ -31,12 +31,13 @@ const vuetify = createVuetify({
     aliases: {
         VBtnError: VBtn,
         VBtnInfo: VBtn,
-        VBtnDoe: VBtn,
-        VBtnDisabled: VBtn
+        VBtnSuccess: VBtn,
+        VBtnDisabled: VBtn,
+        VBtnNone: VBtn
     },
     defaults: {
         VBtn: {
-            color: 'none',
+            color: 'primary',
             variant: 'flat',
             rounded: 'lg'
         },
@@ -55,11 +56,14 @@ const vuetify = createVuetify({
             variant: 'flat',
             color: 'disabled'
         },
-        VBtnDoe: {
+        VBtnSuccess: {
             variant: 'flat',
             color: 'success',
-            
         },
+        VBtnNone: {
+            variant: 'flat',
+            color: 'none',
+        }
     },
 })
 

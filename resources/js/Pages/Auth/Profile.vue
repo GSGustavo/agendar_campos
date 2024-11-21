@@ -1,126 +1,240 @@
 <script>
 import UserAuthLayout from '../../Shared/User/UserAuthLayout.vue';
-
+import Header from '../../Components/Header.vue';
+import { useForm, usePage } from '@inertiajs/vue3'
 
 export default {
-    layout: UserAuthLayout
+    layout: UserAuthLayout,
+    data() {
+        return {
+            snackbar: false,
+            snackText: null,
+            snackColor: null,
+            logoutForm: useForm({}),
+            saveProfileForm: useForm({
+                'name': usePage().props.user.name,
+                'lastname': usePage().props.user.lastname,
+                'email': usePage().props.user.email
+            }),
+            changePasswordForm: useForm({
+                'current_password': '',
+                'password': '',
+                'password_confirmation': ''
+            })
+        }
+    },
+    setup() {
+
+    },
+    methods: {
+        showSnackBar(color, msg) {
+            this.snackbar = true
+            this.snackColor = color
+            this.snackText = msg
+        },
+        save() {
+            this.saveProfileForm.patch('/profile', {
+                onSuccess: () => {
+                    this.showSnackBar('green', 'Perfil atualizado com sucesso!')
+
+                },
+                onError: (data) => {
+                    const color = 'red'
+                    let msg = 'Houve um erro, tente novamente mais tarde!'
+                    if (data.email) {
+                        msg = 'O email ja esta sendo utilizado!'
+                    }
+
+                    this.showSnackBar(color, msg)
+                }
+            })
+        },
+        logout() {
+            this.logoutForm.post('/logout')
+        },
+        changepass() {
+            if (this.changePasswordForm.current_password !== '' && this.changePasswordForm.password !== '' && this.changePasswordForm.password_confirmation !== '') {
+                this.changePasswordForm.put(
+                '/password',
+                {
+                    onSuccess: () => {
+                        this.showSnackBar('green', 'Senha atualizada com sucesso!')
+
+                    },
+                    onError: (data) => {
+                        const color = 'red'
+                        let msg = 'Houve um erro, tente novamente mais tarde!'
+                        if (data.email) {
+                            msg = 'O email ja esta sendo utilizado!'
+                        } else if (data.updatePassword) {
+                            msg = 'As senhas não coincidem.'
+                        } else if (data.updatePassword.password) {
+                            msg = 'A deve ter no mínimo 8 caracteres.'
+                        } else if (data.updatePassword.current_password) {
+                            msg = 'A senha atual esta incorreta!'
+                        }
+
+                        this.showSnackBar(color, msg)
+                    },
+                    
+                }
+            )
+            } else {
+                this.showSnackBar('red', 'Preencha os campos corretamente!')
+            }
+            
+            this.changePasswordForm.current_password = ''
+            this.changePasswordForm.password = '' 
+            this.changePasswordForm.password_confirmation = ''
+        }
+    },
+    components: { Header }
 }
 </script>
 
-<script setup>import { Link } from '@inertiajs/vue3';</script>
 
 <template>
 
-        <div class="flex flex-col gap-10 p-10 justify-center items-center">
-            <p class="text-center font-black text-2xl">
-                Perfil
-            </p>
-            <div class="flex flex-col gap-4 w-full max-w-xl ">
-                <label class="form-control flex">
-                    <div class="dropdown mx-auto">
-                        <div tabindex="0" role="button" class="btn m-1">
-                            Tema
-                            <svg width="12px" height="12px" class="inline-block h-2 w-2 fill-current opacity-60"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
-                                <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
-                            </svg>
-                        </div>
-                        <ul tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl">
-                            <li>
-                                <input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                                    aria-label="Claro" value="default" />
-                            </li>
-                            <li>
-                                <input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                                    aria-label="Escuro" value="retro" />
-                            </li>
-                          
-                        </ul>
-                    </div>
-
-                </label>
-                <label class="form-control ">
-                    <div class="label">
-                        <span class="label-text font-black">Nome: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
 
 
-<input type="text" class="grow" placeholder="Ex.: João" />
-</label>
+    <div class="flex flex-col gap-10 p-10">
+        <Header>
 
-                </label>
-                <label class="form-control">
-                    <div class="label">
-                        <span class="label-text font-black">Sobrenome: <span class="text-red-500">*</span> </span>
+            <v-btn-error @click="logout">
+                <i class="ri-logout-box-r-line"></i> Sair
+            </v-btn-error>
+        </Header>
 
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-<input type="text" class="grow" placeholder="Ex.: da Silva" />
-</label>
+        <div class="flex flex-col gap-4 w-full max-w-xl ">
 
-                </label>
+            <div class="flex flex-col gap-2">
                 <div>
-                    <div class="label">
-                        <span class="label-text font-black">Email: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                            class="h-4 w-4 opacity-70">
-                            <path
-                                d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-                            <path
-                                d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-                        </svg>
-                        <input type="text" class="grow" placeholder="Ex.: joaosilva@gmail.com" />
-                    </label>
+                    <span class="label-text font-black">Nome: <span class="text-red-500">*</span> </span>
                 </div>
-
-                <div>
-                    <div class="label">
-                        <span class="label-text font-black">Senha: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                            class="h-4 w-4 opacity-70">
-                            <path fill-rule="evenodd"
-                                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <input type="password" class="grow" placeholder="Senha" />
-                    </label>
-                </div>
-
-                <div>
-                    <div class="label">
-                        <span class="label-text font-black">Confirmar Senha: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                            class="h-4 w-4 opacity-70">
-                            <path fill-rule="evenodd"
-                                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <input type="password" class="grow" placeholder="Senha" />
-                    </label>
-                </div>
+                <label class="input input-bordered flex items-center gap-2">
 
 
-                <div class="flex justify-center">
-                    <button class="btn btn-active btn-neutral text-white">Salvar</button>
-                </div>
+                    <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
 
-                <div class="flex justify-center">
-                    <Link method="post" href="/logout" as="button" class="btn btn-active btn-error text-white">
-                        <i class="ri-logout-box-r-line"></i> Sair
-                    </Link>
-                </div>
+                    <v-text-field v-model="saveProfileForm.name" variant="outlined"
+                        placeholder="Ex.: João"></v-text-field>
+                </label>
 
             </div>
+
+            <div class="flex flex-col gap-2">
+                <div>
+                    <span class="label-text font-black">Sobrenome: <span class="text-red-500">*</span> </span>
+                </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+
+                    <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                    <v-text-field v-model="saveProfileForm.lastname" variant="outlined"
+                        placeholder="Ex.: da Silva"></v-text-field>
+                </label>
+
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <div>
+                    <span class="label-text font-black">Email: <span class="text-red-500">*</span> </span>
+                </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+
+                    <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                    <v-text-field v-model="saveProfileForm.email" variant="outlined" prepend-inner-icon="ri-mail-line"
+                        placeholder="Insira seu melhor email"></v-text-field>
+                </label>
+
+            </div>
+
+            <div class="flex justify-center">
+                <v-btn-success @click="save">Salvar</v-btn-success>
+            </div>
+
+            <p class="text-center mt-20">
+                Alterar senha
+            </p>
+            <v-dialog max-width="500">
+                <template v-slot:activator="{ props: activatorProps }">
+                    <div class="flex justify-center">
+                        <v-btn-info v-bind="activatorProps">Alterar minha senha</v-btn-info>
+                    </div>
+
+
+                </template>
+
+                <template v-slot:default="{ isActive }">
+                    <v-card title="Alterar minha senha">
+
+                        <v-card-text>
+                            <div class="flex flex-col gap-2">
+                                <div>
+                                    <span class="label-text font-black">Senha atual: <span class="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <label class="input input-bordered flex items-center gap-2">
+
+                                    <v-text-field type="password" v-model="changePasswordForm.current_password" variant="outlined"
+                                        prepend-inner-icon="ri-shield-keyhole-line"
+                                        placeholder="Insira sua senha atual"></v-text-field>
+                                </label>
+
+                            </div>
+
+                            <v-divider class="border-opacity-100" :thickness="3" color="primary">Nova senha</v-divider>
+
+                            <div class="flex flex-col gap-2">
+                                <div>
+                                    <span class="label-text font-black">Nova senha: <span class="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <label class="input input-bordered flex items-center gap-2">
+
+                                    <v-text-field type="password" v-model="changePasswordForm.password" variant="outlined"
+                                        prepend-inner-icon="ri-shield-keyhole-line"
+                                        placeholder="Crie uma nova senha"></v-text-field>
+                                </label>
+
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <div>
+                                    <span class="label-text font-black">Confirmar nova senha: <span
+                                            class="text-red-500">*</span> </span>
+                                </div>
+                                <label class="input input-bordered flex items-center gap-2">
+
+                                    <v-text-field type="password" v-model="changePasswordForm.password_confirmation" variant="outlined"
+                                        prepend-inner-icon="ri-shield-keyhole-line"
+                                        placeholder="Confirme a nova senha"></v-text-field>
+                                </label>
+
+                            </div>
+
+                            <div class="flex justify-center">
+                                <v-btn-success @click="() => {changepass(); isActive.value = false}">Alterar</v-btn-success>
+                            </div>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn-error class="m-4" text="Fechar" @click="isActive.value = false"></v-btn-error>
+                        </v-card-actions>
+                    </v-card>
+                </template>
+            </v-dialog>
+
+            <v-snackbar :timeout="5000" elevation="50" :color="snackColor" v-model="snackbar">
+                <p class="text-center font-black">
+                    {{ snackText }}
+                </p>
+            </v-snackbar>
         </div>
+    </div>
 
 </template>

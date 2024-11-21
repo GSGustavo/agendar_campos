@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Campos;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Guest/Login');
+        // Fazendo isso pro sintético ficar como primeira opção no select do menu
+        $campos = Campos::query()
+            ->where("status", '1')
+            ->orderBy("id", "asc")
+            ->get(['id', 'nome']);
+
+        $data = [
+            'campos' => $campos,
+            'apigetagendamentos' => route("api.auth.menu.getagendamentos"),
+        ];
+        return Inertia::render('Guest/Login', $data);
     }
 
     /**

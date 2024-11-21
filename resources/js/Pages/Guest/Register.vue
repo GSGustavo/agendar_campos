@@ -1,106 +1,164 @@
 <script>
+import { useForm } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
+export default {
+    setup() {
+        return {}
+    },
+    data() {
+        return {
+            form: useForm({
+                name: '',
+                email: '',
+                lastname: '',
+                password: '',
+                password_confirmation: ''
+            }),
+            snackbar: false,
+            snackText: null,
+            snackColor: null,
+        }
+    },
+    components: {
+        Link
+    },
+    methods: {
+        showSnackBar(color, msg) {
+            this.snackbar = true
+            this.snackColor = color
+            this.snackText = msg
+        },
+        submit() {
 
+            if (this.form.name !== '' &&
+            this.form.email !== '' &&
+            this.form.lastname !== '' &&
+            this.form.password !== '' &&
+            this.form.password_confirmation !== '') {
+                this.form.post('/register',  {
+                    onSuccess: () => {
+                        this.showSnackBar('green', 'Conta criada com sucesso!')
 
+                    },
+                    onError: (data) => {
+                        const color = 'red'
+                        let msg = 'Houve um erro, tente novamente mais tarde!'
+                        if (data.email) {
+                            msg = 'O email ja esta sendo utilizado!'
+                        } else if (data.updatePassword) {
+                            msg = 'As senhas não coincidem.'
+                        } else if (data.updatePassword.password) {
+                            msg = 'A deve ter no mínimo 8 caracteres.'
+                        } else if (data.updatePassword.current_password) {
+                            msg = 'A senha atual esta incorreta!'
+                        }
 
-</script>
+                        this.showSnackBar(color, msg)
+                    },
+                    
+                })
+            } else {
+                this.showSnackBar('red', 'Preencha os campos corretamente!')
+            }
 
-<script setup>
-    import { useForm } from '@inertiajs/vue3'
-    import { Link } from '@inertiajs/vue3'
-
-    let form = useForm({
-        name: '',
-        email: '',
-        lastname: '',
-        password: '',
-        password_confirmation: ''
-    })
-
-    let submit = () => {
-        form.post('/register')
+                
+        }
     }
+}
+
 </script>
 
 <template>
-    <form @submit.prevent="submit">
-        <div class="flex flex-col gap-10 p-10 justify-center items-center">
-            <p class="text-center font-black text-2xl">
-                Criar uma Conta
-            </p>
-            <div class="flex flex-col gap-4 w-full max-w-xl ">
-               
-                <label class="form-control ">
-                    <div class="label">
-                        <span class="label-text font-black">Nome: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <input v-model="form.name" id="name" name="name" type="text" placeholder="Ex.: João" class="input input-bordered w-full" />
+
+    <div class="flex flex-col gap-10 p-10 justify-center items-center">
+        <p class="text-center font-black text-2xl">
+            Criar uma Conta
+        </p>
+        <div class="flex flex-col gap-4 w-full max-w-xl ">
+
+            <div class="flex flex-col gap-2">
+                <div>
+                    <span class="label-text font-black">Nome: <span class="text-red-500">*</span> </span>
+                </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+
+                    <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                    <v-text-field v-model="form.name" variant="outlined" placeholder="Ex.: João"></v-text-field>
                 </label>
-                <label class="form-control">
-                    <div class="label">
-                        <span class="label-text font-black">Sobrenome: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <input v-model="form.lastname" id="lastname" name="lastname" type="text" placeholder="Ex.: da Silva" class="input input-bordered w-full" />
+
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <div>
+                    <span class="label-text font-black">Sobrenome: <span class="text-red-500">*</span> </span>
+                </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+
+                    <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                    <v-text-field v-model="form.lastname" variant="outlined" placeholder="Ex.: da Silva"></v-text-field>
                 </label>
+
+            </div>
+            <div class="flex flex-col gap-2">
                 <div>
-                    <div class="label">
-                        <span class="label-text font-black">Email: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                            class="h-4 w-4 opacity-70">
-                            <path
-                                d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-                            <path
-                                d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-                        </svg>
-                        <input v-model="form.email" id="email" name="email" type="text" class="grow" placeholder="Ex.: joaosilva@gmail.com" />
-                    </label>
+                    <span class="label-text font-black">Email: <span class="text-red-500">*</span> </span>
                 </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+
+                    <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                    <v-text-field type="email" v-model="form.email" variant="outlined" prepend-inner-icon="ri-mail-line"
+                        placeholder="Insira seu email"></v-text-field>
+                </label>
+
+            </div>
+            <div class="flex flex-col gap-2">
                 <div>
-                    <div class="label">
-                        <span  class="label-text font-black">Senha: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                            class="h-4 w-4 opacity-70">
-                            <path fill-rule="evenodd"
-                                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <input v-model="form.password" id="password" name="password" type="password" class="grow" placeholder="Senha" />
-                    </label>
+                    <span class="label-text font-black">Senha: <span class="text-red-500">*</span>
+                    </span>
                 </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+                    <v-text-field type="password" v-model="form.password" variant="outlined"
+                        prepend-inner-icon="ri-shield-keyhole-line" placeholder="Crie uma senha"></v-text-field>
+                </label>
+
+            </div>
+
+            <div class="flex flex-col gap-2">
                 <div>
-                    <div class="label">
-                        <span class="label-text font-black">Confirmar Senha: <span class="text-red-500">*</span> </span>
-                    </div>
-                    <label class="input input-bordered flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                            class="h-4 w-4 opacity-70">
-                            <path fill-rule="evenodd"
-                                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <input v-model="form.password_confirmation" id="password_confirmation" name="password_confirmation" type="password" class="grow" placeholder="Senha" />
-                    </label>
+                    <span class="label-text font-black">Confirmar senha: <span class="text-red-500">*</span> </span>
                 </div>
-                <div class="flex justify-center">
-                    <button :disabled="form.processing" class="btn btn-active btn-neutral text-white">Criar Conta</button>
-                </div>
-                <div class="flex w-full flex-col border-opacity-50">
-                    <div class="divider">Ou</div>
-                </div>
-                <div class="flex flex-col gap-4">
-                    <div class="text-center">
-                        <Link as="button" type="submit" href="/login"
-                            class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
-                        Ja tenho uma conta
-                        </Link>
-                    </div>
+                <label class="input input-bordered flex items-center gap-2">
+
+                    <v-text-field type="password" v-model="form.password_confirmation" variant="outlined"
+                        prepend-inner-icon="ri-shield-keyhole-line" placeholder="Confirme a senha"></v-text-field>
+                </label>
+
+            </div>
+            <div class="flex justify-center mb-20">
+                <v-btn @click="submit">Criar Conta</v-btn>
+            </div>
+
+            <v-divider class="border-opacity-100 " :thickness="3" color="primary">Já tem uma conta?</v-divider>
+            <div class="flex flex-col gap-4">
+                <div class="text-center">
+                    <Link as="button" type="submit" href="/login"
+                        class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
+                    Faça login!
+                    </Link>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+    <v-snackbar :timeout="5000" elevation="50" :color="snackColor" v-model="snackbar">
+                <p class="text-center font-black">
+                    {{ snackText }}
+                </p>
+            </v-snackbar>
 </template>
-
-

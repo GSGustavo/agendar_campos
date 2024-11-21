@@ -12,22 +12,39 @@ class AgendamentosController extends Controller
 {
     public function index()
     {
+
         $data = [
-            'status' => true,
+            'apigetmeusagendamentos' => route("api.auth.menu.getmeusagendamentos"),
+        ];
+
+        $data['urlsave'] = route("menu.agendamento.save");
+        $data['urldestroy'] = route("menu.agendamento.destroy");
+
+        return Inertia::render("Auth/Agendamentos/Listar", $data);
+    }
+
+    public function getmeusagendamentos() {
+        $data = [
+            'status' => false,
             
         ];
 
         $agendamentos = Agendamentos::query()
         // ->where("start_on", '>=', new DateTime())
         ->where("agendamentos.status", '1')
+        ->where("agendamentos.user_id", Auth::user()->id)
         ->leftJoin('campos', 'campos.id', '=', 'agendamentos.campo_id')
         ->orderBy("agendamentos.id", 'desc')
-        ->get(['agendamentos.id', 'agendamentos.start_on', 'agendamentos.end_on', 'campos.nome as campo_nome', 'campos.id as campo_id']);
+        ->get(['agendamentos.id', 'agendamentos.start_on', 'agendamentos.end_on', 'campos.nome as campo_nome', 'campos.id as campo_id'])->toArray();
 
-        $data['agendamentos'] = $agendamentos;
-        $data['urlsave'] = route("menu.agendamento.save");
-        $data['urldestroy'] = route("menu.agendamento.destroy");
+        if ($agendamentos) {
+            $data['status'] = true;
 
-        return Inertia::render("Auth/Agendamentos/Listar", $data);
+            $data['agendamentos'] = $agendamentos;
+        }
+        
+       
+
+        return json_encode($data);
     }
 }

@@ -16,6 +16,7 @@ class MenuController extends Controller
     {
         // Fazendo isso pro sintético ficar como primeira opção no select do menu
         $campos = Campos::query()
+        ->where("status", '1')
             ->orderBy("id", "asc")
             ->get(['id', 'nome']);
 

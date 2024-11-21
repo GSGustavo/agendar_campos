@@ -65,8 +65,8 @@ export default {
         startOn: String,
         endOn: String,
         campo: String,
-        id: String,
-        campo_id: String,
+        id: Number,
+        campo_id: Number,
         url: String,
         urldestroy: String
     },
@@ -269,13 +269,17 @@ export default {
             })
 
             this.snackbar = true
-        }
+            setTimeout(() => {
+                this.$emit('updateComponent')
+            }, 1500);
+        },
+        
     },
     mounted() {
         this.fixDateAndTime()
         this.setMode()
     },
-
+    emits: ['updateComponent']
 }
 
 
@@ -385,9 +389,9 @@ export default {
 
             <v-dialog max-width="500">
                 <template v-slot:activator="{ props: activatorProps }">
-                    <v-btn v-if="mode === 1" v-bind="activatorProps" text="">
+                    <v-btn-none v-if="mode === 1" v-bind="activatorProps" text="">
                         <i class="text-2xl ri-delete-bin-line text-gray cursor-pointer text-red-500"></i>
-                    </v-btn>
+                    </v-btn-none>
 
 
                 </template>
