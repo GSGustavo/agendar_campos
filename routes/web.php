@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     
-    
+    require __DIR__.'/auth/web.php';
 });
-require __DIR__.'/auth/web.php';
+
+Route::domain("dash.", env('SESSION_DOMAIN'))->group(function() {
+    Route::controller(DashboardController::class)->group(function() {
+        Route::get("/", 'index')->name("dashboard.index");
+    });
+});
+
 require __DIR__.'/auth.php';
+require __DIR__.'/api/auth/menu/web.php';

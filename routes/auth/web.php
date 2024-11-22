@@ -21,4 +21,3 @@ Route::controller(AgendamentosController::class)->group(function() {
     Route::get('/agendamentos', 'index')->name("auth.agendamentos.index");
 });
 
-require __DIR__.'/../api/auth/menu/web.php';

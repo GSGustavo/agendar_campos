@@ -10,6 +10,11 @@ import * as directives from 'vuetify/directives'
 import { VBtn } from 'vuetify/components'
 import colors from 'vuetify/util/colors'
 
+import { createPinia } from 'pinia'
+import VueApexCharts from 'vue3-apexcharts'
+
+const pinia = createPinia()
+
 const vuetify = createVuetify({
     components,
     theme: {
@@ -75,7 +80,9 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(pinia)
             .use(vuetify)
+            
             .mount(el)
     },
 })

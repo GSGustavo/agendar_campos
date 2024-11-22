@@ -17,12 +17,14 @@
     <link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css">
 </head>
 
-<body >
-    @inertia
+<body>
+
+        @inertia
+ 
     
 </body>
-<script src="{{ asset('js/libs/jquery/main.js') }}"></script>
-<script src="{{ asset('js/libs/jquerymask/main.js') }}"></script>
+{{-- <script src="{{ asset('js/libs/jquery/main.js') }}"></script>
+<script src="{{ asset('js/libs/jquerymask/main.js') }}"></script> --}}
 @yield('js')
 {{-- <script src="https://unpkg.com/vue@latest"></script>
 <script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script> --}}
