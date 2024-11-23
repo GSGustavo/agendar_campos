@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
 const props = defineProps(['pageTitle'])
 </script>
 
@@ -11,7 +13,7 @@ const props = defineProps(['pageTitle'])
     <nav>
       <ol class="flex items-center gap-2">
         <li>
-          <router-link class="font-medium" to="/"> Dashboard / </router-link>
+          <Link class="font-medium" :href="$page.props.routedashboard"> Dashboard / </Link>
         </li>
         <li class="font-medium text-primary">{{ props.pageTitle }}</li>
       </ol>

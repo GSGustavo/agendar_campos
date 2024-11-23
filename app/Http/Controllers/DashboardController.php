@@ -8,6 +8,12 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
     public function index() {
-        return Inertia::render('Auth/Dashboard/Index', []);
+
+        $data = [
+            'routeusers' => route('users.index'),
+       
+        ];
+
+        return Inertia::render('Auth/Dashboard/Index', $data);
     }
 }

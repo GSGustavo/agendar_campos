@@ -105,7 +105,7 @@ export default {
             </v-btn-error>
         </Header>
 
-        <div class="flex flex-col gap-4 w-full max-w-xl ">
+        <div class="flex flex-col gap-4  ">
 
             <div class="flex flex-col gap-2">
                 <div>

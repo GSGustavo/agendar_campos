@@ -1,7 +1,7 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 
-// import 'vuetify/styles'
+
 import 'vuetify/styles'
 import { createVuetify, useTheme } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -67,7 +67,7 @@ const vuetify = createVuetify({
         },
         VBtnNone: {
             variant: 'flat',
-            color: 'none',
+            color: 'transparent',
         }
     },
 })
@@ -80,9 +80,11 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(pinia)
             .use(vuetify)
+            .use(pinia)
+            
             
             .mount(el)
     },
 })
+

@@ -1,11 +1,21 @@
 <script>
 import DashLayout from '../../../Shared/Admin/DashLayout.vue';
 
+
 export default {
-    layout: DashLayout
+    layout: DashLayout,
+    setup() {
+
+    },
+    components: {}
 }
 </script>
 
 <template>
-    teste
+
+    <!-- Breadcrumb End -->
+
+    <div class="flex flex-col gap-10">
+      
+    </div>
 </template>

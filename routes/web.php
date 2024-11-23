@@ -3,10 +3,29 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(IndexController::class)->group(function() {
-    Route::get("/", "index")->name("index.projeto");
+
+
+
+Route::domain(env('SESSION_DOMAIN'))->group(function() {
+    Route::controller(IndexController::class)->group(function() {
+        Route::get("/", "index")->name("index.projeto");
+    });
+
+    require __DIR__.'/auth.php';
+});
+
+Route::domain("dash." . env('SESSION_DOMAIN'))->group(function() {
+    Route::controller(DashboardController::class)->group(function() {
+        Route::get("/", 'index')->name("dashboard.index");
+       
+    });
+
+    Route::controller(UsersController::class)->group(function() {
+        Route::get("/users", 'index')->name("users.index");
+    });
 });
 
 // Route::get('/dashboard', function () {
@@ -22,11 +41,8 @@ Route::middleware('auth')->group(function () {
     require __DIR__.'/auth/web.php';
 });
 
-Route::domain("dash.", env('SESSION_DOMAIN'))->group(function() {
-    Route::controller(DashboardController::class)->group(function() {
-        Route::get("/", 'index')->name("dashboard.index");
-    });
-});
 
-require __DIR__.'/auth.php';
+
+
 require __DIR__.'/api/auth/menu/web.php';
+require __DIR__.'/api/auth/dash/web.php';
