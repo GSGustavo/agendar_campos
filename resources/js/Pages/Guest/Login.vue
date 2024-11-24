@@ -29,7 +29,7 @@ export default {
             if (this.form.email !== '' && this.form.password !== '') {
                 this.form.post('/login', {
                     onSuccess: () => {
-                        this.showSnackBar('green', 'Senha atualizada com sucesso!')
+                        this.showSnackBar('green', 'Login efetuado com sucesso!')
 
                     },
                     onError: (data) => {
@@ -38,11 +38,19 @@ export default {
                         if (data.email) {
                             msg = 'Email ou senha inválidos!'
                         } else if (data.updatePassword) {
-                            msg = 'As senhas não coincidem.'
-                        } else if (data.updatePassword.password) {
-                            msg = 'A deve ter no mínimo 8 caracteres.'
-                        } else if (data.updatePassword.current_password) {
-                            msg = 'A senha atual esta incorreta!'
+
+                            if (data.updatePassword.password) {
+                                msg = 'A deve ter no mínimo 8 caracteres.'
+                            } else if (data.updatePassword.current_password) {
+                                msg = 'A senha atual esta incorreta!'
+                            } else {
+                                msg = 'As senhas não coincidem.'
+                            }
+                           
+
+
+                        } else if (data.account) {
+                            msg = 'Sua conta encontra-se inativa!'
                         }
 
                         this.showSnackBar(color, msg)
@@ -66,7 +74,7 @@ export default {
     <div class="flex justify-center p-10">
         <div class="flex flex-col w-[350px] xl:w-[500px] gap-4">
             <div class="flex justify-center">
-                <AboutBadge/>
+                <AboutBadge />
             </div>
             <div class="">
                 <div class="text-center p-5">
@@ -87,8 +95,8 @@ export default {
 
                     <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
 
-                    <v-text-field autocomplete="email" type="email" v-model="form.email" variant="outlined" prepend-inner-icon="ri-mail-line"
-                        placeholder="Insira seu email"></v-text-field>
+                    <v-text-field autocomplete="email" type="email" v-model="form.email" variant="outlined"
+                        prepend-inner-icon="ri-mail-line" placeholder="Insira seu email"></v-text-field>
                 </label>
 
             </div>
