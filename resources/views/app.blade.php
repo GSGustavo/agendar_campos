@@ -18,10 +18,7 @@
 </head>
 
 <body>
-
-        @inertia
- 
-    
+    @inertia
 </body>
 {{-- <script src="{{ asset('js/libs/jquery/main.js') }}"></script>
 <script src="{{ asset('js/libs/jquerymask/main.js') }}"></script> --}}

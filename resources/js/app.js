@@ -23,7 +23,7 @@ const vuetify = createVuetify({
             light: {
                 dark: false,
                 colors: {
-                    primary: '#000000',
+                    primary: '#000',
                     error: colors.red.base,
                     info: colors.blue.base,
                     success: colors.green.base,

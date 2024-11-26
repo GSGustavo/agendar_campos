@@ -9,88 +9,106 @@ use Inertia\Inertia;
 
 class UsersController extends Controller
 {
-	public function index()
-	{
-		$data = [
-			'routegetusers' => route("api.auth.dash.getusers"),
-			'routeapioperationsusers' => route("api.auth.dash.operation")
-		];
+    public function index()
+    {
+        $data = [
+            'routegetusers' => route("api.auth.dash.getusers"),
+            'routeapioperationsusers' => route("api.auth.dash.operation")
+        ];
 
-		return Inertia::render("Auth/Dashboard/Users/Index", $data);
-	}
+        return Inertia::render("Auth/Dashboard/Users/Index", $data);
+    }
 
-	public function getusers()
-	{
+    public function getusers()
+    {
 
-		$users = User::select(
-			"id",
-			DB::Raw("CONCAT(name, ' ', lastname) AS nome_completo"),
-			'email',
-			'is_admin',
-			'status',
+        $users = User::select(
+            "id",
+            'name',
+            'lastname',
+            'email',
+            'is_admin',
+            'status',
 
-			// Estou usando cast la no model dos usuários para formatar as colunas de datas
-			'created_at',
-			'updated_at'
-		)->get();
-
-
-
-
-		return json_encode($users);
-	}
-
-	public function operation(Request $request)
-	{
-		// Rota para inativar, ativar, criar, editar usuários
-
-		// atributos obrigatorios para o post
-		// id do usuário
-
-		// 0 status
-		// atributos:
-		// "status"
-
-		// 1 criar
-		// 2 editar
-
-
-
-		$data = [
-			'status' => false,
-			'error' => "Algo deu errado, tente novamente mais tarde!"
-		];
-
-		$operation = $request->operation;
+            // Estou usando cast la no model dos usuários para formatar as colunas de datas
+            'created_at',
+            'updated_at'
+        )->get();
 
 
 
 
+        return json_encode($users);
+    }
 
-		if ($operation == 0) {
-			$status = $request->status;
+    public function operation(Request $request)
+    {
+        // Rota para inativar, ativar, criar, editar usuários
 
-			$user = User::find($request->id);
+        // atributos obrigatorios para o post, exceto em caso de novo usuário
+        // id do usuário
 
-			if ($user->is_admin == 0) {
-				$dataUser = [
-					'id' => $request->id,
-					'status' => $status
-				];
+        // 0 status
+        // atributos:
+        // "status"
 
-				
-				$saveUser = $user->update($dataUser);
-
-				if ($saveUser) {
-					$data['status'] = true;
-					$data['error'] = '';
-				} 
-			} else {
-				$data['error'] = 'Admins não podem sofrer alterações de status!';
-			}
-		}
+        // 1 criar/editar
 
 
-		return json_encode($data);
-	}
+
+        $data = [
+            'status' => false,
+            'error' => "Algo deu errado, tente novamente mais tarde!"
+        ];
+
+        $operation = $request->operation;
+
+
+
+
+
+        if ($operation == 0) {
+            $status = $request->status;
+
+            $user = User::find($request->id);
+
+            if ($user->is_admin == 0) {
+                $dataUser = [
+                    'id' => $request->id,
+                    'status' => $status
+                ];
+
+
+                $saveUser = $user->update($dataUser);
+
+                if ($saveUser) {
+                    $data['status'] = true;
+                    $data['error'] = '';
+                }
+            } else {
+                $data['error'] = 'Admins não podem sofrer alterações de status!';
+            }
+        } else if ($operation == 1) {
+            $user = User::find($request->id);
+
+            $dataUser = [
+                'id' => $request->id,
+                'name' => $request->name,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'is_admin' => $request->is_admin
+            ];
+
+
+            $saveUser = $user->update($dataUser);
+
+            if ($saveUser) {
+                $data['status'] = true;
+                $data['error'] = '';
+            }
+        }
+
+
+        return json_encode($data);
+    }
 }

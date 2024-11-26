@@ -38,18 +38,20 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
 
-        $user = User::select()->where('email', $request->email)->where("status", '1')->exists();
-
+        $user = User::select()->where('email', $request->email)->exists();
+        $status = User::select()->where('email', $request->email)->where("status", '1')->exists();
         
 
-        if ($user) {
+        if ($user and $status) {
             $request->authenticate();
 
             $request->session()->regenerate();
 
             return redirect()->intended(route('auth.menu.index', absolute: false));
+        } else if ($user) {
+            return back()->withErrors(['account' => 'Sua conta encontra-se inativa!']);
         } else {
-            return back()->withErrors(['account' => 'A conta esta desativada']);
+            return back()->withErrors(['account' => 'A conta não existe!']);
         }
 
     

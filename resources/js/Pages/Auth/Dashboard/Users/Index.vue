@@ -18,23 +18,23 @@ export default {
             dialog: false,
             dialogDelete: false,
             editedItem: {
+                id: '',
                 name: '',
                 lastname: '',
                 email: '',
                 is_admin: false,
-                status: true,
             },
             defaultItem: {
+                id: '',
                 name: '',
                 lastname: '',
                 email: '',
                 is_admin: false,
-                status: true,
-
             },
             headers: [
                 { title: 'ID', key: 'id' },
-                { title: 'Nome', key: 'nome_completo' },
+                { title: 'Nome', key: 'name' },
+                { title: 'Sobrenome', key: 'lastname' },
                 { title: 'Email', key: 'email' },
                 { title: 'Admin', key: 'is_admin' },
                 { title: 'Situação', key: 'status' },
@@ -83,6 +83,9 @@ export default {
         editItem(item) {
             this.editedIndex = this.users.indexOf(item)
             this.editedItem = Object.assign({}, item)
+
+            this.editedItem.is_admin = item.is_admin === 1
+
             this.dialog = true
         },
 
@@ -134,6 +137,24 @@ export default {
         save() {
             if (this.editedIndex > -1) {
                 Object.assign(this.users[this.editedIndex], this.editedItem)
+
+                axios.post(usePage().props.routeapioperationsusers, {
+                    operation: 1,
+                    id: this.editedItem.id,
+                    name: this.editedItem.name,
+                    lastname: this.editedItem.lastname,
+                    email: this.editedItem.email,
+                    is_admin: this.editedItem.is_admin ? 1 : 0
+                })
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.onClick()
+                    } else {
+                        console.log("erro")
+                    }
+                })
+
+
             } else {
                 this.users.push(this.editedItem)
             }
@@ -165,6 +186,7 @@ export default {
         <div>
             <v-btn :disabled="loading" append-icon="ri-refresh-line" text="Recarregar" @click="onClick"></v-btn>
         </div>
+        
 
 
         <v-text-field v-model="search" label="Pesquisar" prepend-inner-icon="ri-search-line" variant="outlined"
@@ -217,7 +239,66 @@ export default {
                             <v-card-text>
                                 <v-container>
 
+                                    <div class="flex flex-col gap-4  ">
 
+                                        <div class="flex flex-col gap-2">
+                                            <div>
+                                                <span class="label-text font-black">Nome: <span
+                                                        class="text-red-500">*</span> </span>
+                                            </div>
+                                            <label class="input input-bordered flex items-center gap-2">
+
+
+                                                <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                                                <v-text-field v-model="editedItem.name" variant="outlined"
+                                                    placeholder="Ex.: João"></v-text-field>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="flex flex-col gap-2">
+                                            <div>
+                                                <span class="label-text font-black">Sobrenome: <span
+                                                        class="text-red-500">*</span> </span>
+                                            </div>
+                                            <label class="input input-bordered flex items-center gap-2">
+
+
+                                                <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                                                <v-text-field v-model="editedItem.lastname" variant="outlined"
+                                                    placeholder="Ex.: da Silva"></v-text-field>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="flex flex-col gap-2">
+                                            <div>
+                                                <span class="label-text font-black">Email: <span
+                                                        class="text-red-500">*</span> </span>
+                                            </div>
+                                            <label class="input input-bordered flex items-center gap-2">
+
+
+                                                <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                                                <v-text-field v-model="editedItem.email" variant="outlined"
+                                                    prepend-inner-icon="ri-mail-line"
+                                                    placeholder="Insira seu melhor email"></v-text-field>
+                                            </label>
+
+                                        </div>
+
+                                        
+                            
+
+                                        <div class="flex flex-col gap-2">
+                                            <v-switch v-model="editedItem.is_admin"  label="Administrador"></v-switch>
+                                        </div>
+                                    
+                                
+                                    </div>
 
                                 </v-container>
                             </v-card-text>

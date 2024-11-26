@@ -50,7 +50,7 @@ export default {
 
 
                         } else if (data.account) {
-                            msg = 'Sua conta encontra-se inativa!'
+                            msg = data.account
                         }
 
                         this.showSnackBar(color, msg)

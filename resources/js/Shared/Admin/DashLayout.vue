@@ -1,14 +1,17 @@
-<script setup>
+<script setup scoped>
 import HeaderArea from '@/Components/Header/HeaderArea.vue'
 import SidebarArea from '@/Components/Sidebar/SidebarArea.vue'
 // import '@/assets/css/satoshi.css'
-// import '@/assets/css/style.css'
+// import  '@/assets/css/style.css' 
 // import '@jsvectormap/di;st/css/jsvectormap.min.css'
 // import '@flatpickr/dist/flatpickr.min.css'
 
 </script>
 
+
+
 <template>
+ <!-- <link rel="stylesheet" src=""/> -->
   <!-- ===== Page Wrapper Start ===== -->
   <div class="flex h-screen overflow-hidden">
     <!-- ===== Sidebar Start ===== -->
