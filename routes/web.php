@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CamposController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
@@ -14,6 +15,7 @@ Route::domain(env('SESSION_DOMAIN'))->group(function() {
         Route::get("/", "index")->name("index.projeto");
     });
 
+    Route::post('/api/resetpassword', [UsersController::class, 'operation'])->name("api.auth.admin.resetpassword");
     require __DIR__.'/auth.php';
 });
 
@@ -25,6 +27,10 @@ Route::domain("dash." . env('SESSION_DOMAIN'))->group(function() {
 
     Route::controller(UsersController::class)->group(function() {
         Route::get("/users", 'index')->name("users.index");
+    });
+
+    Route::controller(CamposController::class)->group(function() {
+        Route::get("/campos", 'index')->name("campos.index");
     });
 });
 

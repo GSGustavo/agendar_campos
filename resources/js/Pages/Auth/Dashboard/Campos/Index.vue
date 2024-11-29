@@ -17,36 +17,32 @@ export default {
             statusData: {},
             dialog: false,
             dialogDelete: false,
-            dialogReset: false,
-            dialogResetConfirm: false,
-            dataReset: {},
+            dialogMaps: false,
+
+            maps_link: "",
+       
             editedItem: {
                 id: '',
                 name: '',
-                lastname: '',
-                email: '',
-                is_admin: false,
+                maps_link: '',
+
             },
             defaultItem: {
                 id: '',
                 name: '',
-                lastname: '',
-                email: '',
-                is_admin: false,
+                maps_link: '',
             },
             headers: [
                 { title: 'ID', key: 'id' },
-                { title: 'Nome', key: 'name' },
-                { title: 'Sobrenome', key: 'lastname' },
-                { title: 'Email', key: 'email' },
-                { title: 'Admin', key: 'is_admin' },
+                { title: 'Nome', key: 'nome' },
+                { title: 'Maps Link', key: 'maps_link' },
                 { title: 'Situação', key: 'status' },
                 { title: 'Atualizado Em', key: 'updated_at' },
                 { title: 'Criado Em', key: 'created_at' },
                 { title: 'Actions', key: 'actions', sortable: false },
 
             ],
-            users: []
+            campos: []
         }
     },
     computed: {
@@ -62,6 +58,10 @@ export default {
     },
     components: { BreadcrumbDefault },
     methods: {
+        openDialogMaps(link) {
+            this.maps_link = link
+            this.dialogMaps = true
+        },
         showSnackBar(color, msg) {
             this.snackbar = true
             this.snackColor = color
@@ -70,11 +70,11 @@ export default {
         onClick() {
             this.loading = true
 
-            axios.post(usePage().props.routegetusers, {
+            axios.post(usePage().props.routegetcampos, {
 
             }).then((response) => {
                 if (response.status === 200) {
-                    this.users = response.data
+                    this.campos = response.data.campos
 
                     this.loading = false
                 } else {
@@ -84,7 +84,7 @@ export default {
             })
         },
         editItem(item) {
-            this.editedIndex = this.users.indexOf(item)
+            this.editedIndex = this.campos.indexOf(item)
             this.editedItem = Object.assign({}, item)
 
             this.editedItem.is_admin = item.is_admin === 1
@@ -93,7 +93,7 @@ export default {
         },
 
         deleteItem(status, id) {
-            this.statusTitle = status === 0 ? 'Você quer realmente inativar este usuário?' : 'Deseja ativar este usuário?'
+            this.statusTitle = status === 0 ? 'Você quer realmente inativar este campo?' : 'Deseja ativar este campo?'
 
             this.statusData = {
                 operation: 0,
@@ -104,17 +104,11 @@ export default {
             this.dialogDelete = true
         },
 
-        resetPass(item) {
-            this.dataReset = {
-                operation: 2,
-                email: item.email
-            }
-            this.dialogReset = true
-        },
+
 
         deleteItemConfirm() {
 
-            axios.post(usePage().props.routeapioperationsusers, this.statusData)
+            axios.post(usePage().props.routeapioperationscampos, this.statusData)
                 .then((response) => {
                     if (response.status === 200) {
                         this.onClick()
@@ -128,21 +122,9 @@ export default {
             this.closeDelete()
         },
 
-        resetItemConfirm() {
 
-            axios.post(usePage().props.routeapiresetpass, this.dataReset)
-                .then((response) => {
-                    if (response.status === 200) {
-                        this.onClick()
-                        this.showSnackBar('green', 'Email de recuperação de senha, enviado!')
-                    } else {
-                        console.log("erro")
-                    }
-                })
-
-
-
-            this.closeReset()
+        closeDialogMaps() {
+            this.dialogMaps = false
         },
 
         close() {
@@ -162,20 +144,13 @@ export default {
             })
         },
 
-        closeReset() {
-            this.dialogReset = false
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
 
-            })
-        },
 
         save() {
             if (this.editedIndex > -1) {
-                Object.assign(this.users[this.editedIndex], this.editedItem)
+                Object.assign(this.campos[this.editedIndex], this.editedItem)
 
-                axios.post(usePage().props.routeapioperationsusers, {
+                axios.post(usePage().props.routeapioperationscampos, {
                     operation: 1,
                     id: this.editedItem.id,
                     name: this.editedItem.name,
@@ -183,17 +158,17 @@ export default {
                     email: this.editedItem.email,
                     is_admin: this.editedItem.is_admin ? 1 : 0
                 })
-                .then((response) => {
-                    if (response.status === 200) {
-                        this.onClick()
-                    } else {
-                        console.log("erro")
-                    }
-                })
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.onClick()
+                        } else {
+                            console.log("erro")
+                        }
+                    })
 
 
             } else {
-                this.users.push(this.editedItem)
+                this.campos.push(this.editedItem)
             }
             this.close()
         },
@@ -217,36 +192,37 @@ export default {
 
 
 <template>
-    <BreadcrumbDefault pageTitle="Usuários" />
+    <BreadcrumbDefault pageTitle="Campos" />
     <div class="flex flex-col gap-10">
 
         <div>
             <v-btn :disabled="loading" append-icon="ri-refresh-line" text="Recarregar" @click="onClick"></v-btn>
         </div>
-        
+
 
 
         <v-text-field v-model="search" label="Pesquisar" prepend-inner-icon="ri-search-line" variant="outlined"
             hide-details single-line></v-text-field>
 
 
-        <v-data-table :search="search" :headers="headers" :items="users" :loading="loading">
+        <v-data-table :search="search" :headers="headers" :items="campos" :loading="loading">
             <template v-slot:loading>
                 <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
             </template>
 
-            <template v-slot:item.is_admin="{ item }">
-                <v-chip color="green" v-if="item.is_admin === 1" class="">
-                    Sim
-                </v-chip>
-                <v-chip v-else color="red">
-                    Não
-                </v-chip>
 
+
+            <template v-slot:item.maps_link="{ item }">
+
+                <v-btn @click="openDialogMaps(item.maps_link)">
+                    Maps
+                </v-btn>
+
+                
             </template>
 
             <template v-slot:item.status="{ item }">
-                <v-chip color="green" v-if="item.status === 1" class="">
+                <v-chip color="green" v-if="item.status === '1'" class="">
                     Ativo
                 </v-chip>
                 <v-chip v-else color="red">
@@ -262,10 +238,10 @@ export default {
 
                     <v-spacer></v-spacer>
 
-                    <v-dialog v-model="dialog" max-width="500px">
+                    <v-dialog v-model="dialog" max-width="800px">
                         <template v-slot:activator="{ props }">
                             <v-btn-info v-bind="props">
-                                Novo Usuário
+                                Novo Campo
                             </v-btn-info>
                         </template>
                         <v-card>
@@ -288,7 +264,7 @@ export default {
 
                                                 <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
 
-                                                <v-text-field v-model="editedItem.name" variant="outlined"
+                                                <v-text-field v-model="editedItem.nome" variant="outlined"
                                                     placeholder="Ex.: João"></v-text-field>
                                             </label>
 
@@ -296,7 +272,7 @@ export default {
 
                                         <div class="flex flex-col gap-2">
                                             <div>
-                                                <span class="label-text font-black">Sobrenome: <span
+                                                <span class="label-text font-black">Maps Link: <span
                                                         class="text-red-500">*</span> </span>
                                             </div>
                                             <label class="input input-bordered flex items-center gap-2">
@@ -304,37 +280,17 @@ export default {
 
                                                 <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
 
-                                                <v-text-field v-model="editedItem.lastname" variant="outlined"
+                                                <v-text-field v-model="editedItem.maps_link" variant="outlined"
                                                     placeholder="Ex.: da Silva"></v-text-field>
                                             </label>
 
                                         </div>
 
-                                        <div class="flex flex-col gap-2">
-                                            <div>
-                                                <span class="label-text font-black">Email: <span
-                                                        class="text-red-500">*</span> </span>
-                                            </div>
-                                            <label class="input input-bordered flex items-center gap-2">
+                                        <iframe id="iframe" ref="iframe" :src="editedItem.maps_link" height="350"
+                                        loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
 
 
-                                                <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
 
-                                                <v-text-field v-model="editedItem.email" variant="outlined"
-                                                    prepend-inner-icon="ri-mail-line"
-                                                    placeholder="Insira seu melhor email"></v-text-field>
-                                            </label>
-
-                                        </div>
-
-                                        
-                            
-
-                                        <div class="flex flex-col gap-2">
-                                            <v-switch v-model="editedItem.is_admin"  label="Administrador"></v-switch>
-                                        </div>
-                                    
-                                
                                     </div>
 
                                 </v-container>
@@ -354,7 +310,7 @@ export default {
                     <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
                             <v-card-title class="text-h5">{{ statusTitle }}</v-card-title>
-                          
+
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
@@ -363,26 +319,30 @@ export default {
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-                    <v-dialog v-model="dialogReset" max-width="500px">
-                        <v-card>
-                           
-                            <v-card-text>
-                                <v-container>
-                                    <p>
-                                        Deseja realmente obter um link de redefinição de senha para este usuário?
-                                    </p>
-                                </v-container>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue-darken-1" variant="text" @click="closeReset">Cancelar</v-btn>
-                                <v-btn color="blue-darken-1" variant="text" @click="resetItemConfirm">Sim</v-btn>
-                                <v-spacer></v-spacer>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
 
-                  
+                    <v-dialog v-model="dialogMaps" max-width="900px">
+                    <v-card>
+
+                        <v-card-text>
+                            <div class="flex items-center justify-center">
+                                <iframe id="iframe" ref="iframe" :src="maps_link" height="450" width="800"
+                                    loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn color="blue-darken-1" variant="text" @click="closeDialogMaps">Fechar</v-btn>
+
+                            <v-spacer></v-spacer>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
+
+
                 </v-toolbar>
             </template>
 
@@ -396,10 +356,6 @@ export default {
                     </v-icon>
                     <v-icon v-else size="small" @click="deleteItem(1, item.id)">
                         ri-check-line
-                    </v-icon>
-                  
-                    <v-icon size="small" @click="resetPass(item)">
-                        ri-git-repository-private-line
                     </v-icon>
                 </div>
             </template>

@@ -9,11 +9,8 @@ class DashboardController extends Controller
 {
     public function index() {
 
-        $data = [
-            'routeusers' => route('users.index'),
-       
-        ];
 
-        return Inertia::render('Auth/Dashboard/Index', $data);
+
+        return Inertia::render('Auth/Dashboard/Index');
     }
 }

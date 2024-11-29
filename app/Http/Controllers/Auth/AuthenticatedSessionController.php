@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 use Inertia\Inertia;
 
@@ -28,7 +29,12 @@ class AuthenticatedSessionController extends Controller
         $data = [
             'campos' => $campos,
             'apigetagendamentos' => route("api.auth.menu.getagendamentos"),
+            'routeforgotpass' => route('password.request')
         ];
+
+
+
+
         return Inertia::render('Guest/Login', $data);
     }
 
@@ -43,11 +49,19 @@ class AuthenticatedSessionController extends Controller
         
 
         if ($user and $status) {
-            $request->authenticate();
+            if ($user) {
+                $request->authenticate();
 
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('auth.menu.index', absolute: false));
+                $request->session()->regenerate();
+    
+                return redirect()->intended(route('auth.menu.index', absolute: false));
+            } else {
+                $data = [
+                    'email' => $user->email
+                ];
+                return Inertia::render("Guest/Password/Changepass");
+            }
+            
         } else if ($user) {
             return back()->withErrors(['account' => 'Sua conta encontra-se inativa!']);
         } else {

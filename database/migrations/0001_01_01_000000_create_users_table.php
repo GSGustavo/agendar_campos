@@ -21,6 +21,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->integer("status")->default("1"); // 0 desativado / 1 ativo
             $table->integer("is_admin")->default("0"); // 0 desativado / 1 ativo
+            $table->integer("changepass")->default("0")->comment("Essa coluna serve para verificar se o usuário precisa redefinir sua senha"); // 0 desativado / 1 ativo
             $table->timestamps();
         });
 

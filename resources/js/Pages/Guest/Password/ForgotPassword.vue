@@ -1,8 +1,6 @@
 <script>
-import { useForm } from '@inertiajs/vue3'
+import { useForm, usePage } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3'
-import ModalDisponibilidades from '../../Components/ModalDisponibilidades.vue';
-import AboutBadge from '../../Components/AboutBadge.vue';
 
 export default {
     setup() {
@@ -15,7 +13,7 @@ export default {
             snackColor: null,
             form: useForm({
                 email: '',
-                password: ''
+         
             })
         }
     },
@@ -26,32 +24,16 @@ export default {
             this.snackText = msg
         },
         submit() {
-            if (this.form.email !== '' && this.form.password !== '') {
-                this.form.post('/login', {
+            if (this.form.email !== '') {
+                this.form.post(usePage().props.routesendemail, {
                     onSuccess: () => {
-                        this.showSnackBar('green', 'Login efetuado com sucesso!')
+                        this.showSnackBar('green', 'Email enviado com sucesso!')
 
                     },
                     onError: (data) => {
                         const color = 'red'
-                        let msg = 'Houve um erro, tente novamente mais tarde!'
-                        if (data.email) {
-                            msg = 'Email ou senha inválidos!'
-                        } else if (data.updatePassword) {
-
-                            if (data.updatePassword.password) {
-                                msg = 'A deve ter no mínimo 8 caracteres.'
-                            } else if (data.updatePassword.current_password) {
-                                msg = 'A senha atual esta incorreta!'
-                            } else {
-                                msg = 'As senhas não coincidem.'
-                            }
-                           
-
-
-                        } else if (data.account) {
-                            msg = data.account
-                        }
+                        const msg = 'Houve um erro, tente novamente mais tarde!'
+                      
 
                         this.showSnackBar(color, msg)
                     },
@@ -63,7 +45,7 @@ export default {
 
         }
     },
-    components: { Link, ModalDisponibilidades, AboutBadge }
+    components: { Link }
 }
 </script>
 
@@ -71,15 +53,14 @@ export default {
 
 
 <template>
+    <!-- Guest/Password/ForgotPassword -->
     <div class="flex justify-center p-10">
         <div class="flex flex-col w-[350px] xl:w-[500px] gap-4">
-            <div class="flex justify-center">
-                <AboutBadge />
-            </div>
+          
             <div class="">
                 <div class="text-center p-5">
                     <h3 class="h3 text-2xl font-black">
-                        Fazer Login
+                        Enviar email de redefinição de senha
                     </h3>
                 </div>
             </div>
@@ -101,28 +82,15 @@ export default {
 
             </div>
 
-            <div class="flex flex-col gap-2">
-                <div>
-                    <span class="label-text font-black">Senha: <span class="text-red-500">*</span>
-                    </span>
-                </div>
-                <label class="input input-bordered flex items-center gap-2">
-
-                    <v-text-field type="password" v-model="form.password" variant="outlined"
-                        prepend-inner-icon="ri-shield-keyhole-line" placeholder="Insira sua senha"></v-text-field>
-                </label>
-
-            </div>
+      
             <div class="">
                 <div class="text-center">
 
-                    <v-btn @click="submit">Entrar</v-btn>
+                    <v-btn @click="submit">Enviar</v-btn>
                 </div>
             </div>
 
-            <Link class="text-center" :href="$page.props.routeforgotpass">
-                Esqueci minha senha
-            </Link>
+    
 
 
             <div class="flex w-full flex-col border-opacity-50">
@@ -134,20 +102,14 @@ export default {
             <div class="flex flex-col gap-4">
                 <div class="text-center">
 
-                    <Link as="button" href="/register"
+                    <Link as="button" href="/login"
                         class="bg-primary text-white py-2 px-5 rounded-[10px] hover:bg-transparent hover:text-black font-black border-2 hover:border-black transition-all duration-100">
-                    Crie sua conta
+                    Voltar
                     </Link>
                 </div>
             </div>
 
-            <div class="mt-20">
-                <p class="text-center">
-                    Deseja apenas ver as disponibilidades? Clique no botão abaixo.
-                </p>
-            </div>
-
-            <ModalDisponibilidades />
+       
         </div>
     </div>
     <v-snackbar :timeout="5000" elevation="50" :color="snackColor" v-model="snackbar">

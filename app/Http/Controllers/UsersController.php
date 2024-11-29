@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PasswordResetTokens;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
 use Inertia\Inertia;
 
 class UsersController extends Controller
@@ -13,7 +15,8 @@ class UsersController extends Controller
     {
         $data = [
             'routegetusers' => route("api.auth.dash.getusers"),
-            'routeapioperationsusers' => route("api.auth.dash.operation")
+            'routeapioperationsusers' => route("api.auth.dash.operation"),
+            'routeapiresetpass' => route("api.auth.admin.resetpassword")
         ];
 
         return Inertia::render("Auth/Dashboard/Users/Index", $data);
@@ -53,6 +56,9 @@ class UsersController extends Controller
         // "status"
 
         // 1 criar/editar
+
+        // 2 reset password
+
 
 
 
@@ -106,6 +112,24 @@ class UsersController extends Controller
                 $data['status'] = true;
                 $data['error'] = '';
             }
+        } else if ($operation == 2) {
+            $request->validate(['email' => 'required|email']);
+ 
+            $status = Password::sendResetLink(
+                $request->only('email')
+            );
+
+
+            $resetSave = $status == Password::RESET_LINK_SENT;
+
+            if (!$resetSave) {
+                $data['error'] = __($status);
+            } 
+
+            
+
+
+            $data['status'] = $resetSave;
         }
 
 

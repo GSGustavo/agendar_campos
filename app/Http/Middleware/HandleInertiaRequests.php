@@ -57,7 +57,9 @@ class HandleInertiaRequests extends Middleware
             'user' => $user,
             'lastUpdate' => config("app.lastupdate"),
             'sociallinktree' => config("app.sociallinktree"),
-            'routedashboard' => route("dashboard.index")
+            'routedashboard' => route("dashboard.index"),
+            'routecampos' => route("campos.index"),
+            'routeusers' => route('users.index'),
         ]);
     }
 }
