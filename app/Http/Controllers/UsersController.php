@@ -29,6 +29,7 @@ class UsersController extends Controller
             "id",
             'name',
             'lastname',
+            DB::raw('CONCAT(name, \' \', lastname) as full_name'),
             'email',
             'is_admin',
             'status',

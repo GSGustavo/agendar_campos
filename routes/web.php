@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CamposController;
+use App\Http\Controllers\DashAgendamentosController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
@@ -16,8 +17,10 @@ Route::domain(env('SESSION_DOMAIN'))->group(function() {
     });
 
     Route::post('/api/resetpassword', [UsersController::class, 'operation'])->name("api.auth.admin.resetpassword");
-    require __DIR__.'/auth.php';
+   
 });
+
+require __DIR__.'/auth.php';
 
 Route::domain("dash." . env('SESSION_DOMAIN'))->group(function() {
     Route::controller(DashboardController::class)->group(function() {
@@ -31,6 +34,10 @@ Route::domain("dash." . env('SESSION_DOMAIN'))->group(function() {
 
     Route::controller(CamposController::class)->group(function() {
         Route::get("/campos", 'index')->name("campos.index");
+    });
+
+    Route::controller(DashAgendamentosController::class)->group(function() {
+        Route::get("/agendamentos", 'index')->name("agendamentos.index");
     });
 });
 

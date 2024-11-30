@@ -13,6 +13,7 @@ import colors from 'vuetify/util/colors'
 import { createPinia } from 'pinia'
 import VueApexCharts from 'vue3-apexcharts'
 
+
 const pinia = createPinia()
 
 const vuetify = createVuetify({
@@ -82,7 +83,7 @@ createInertiaApp({
             .use(plugin)
             .use(vuetify)
             .use(pinia)
-            
+   
             
             .mount(el)
     },

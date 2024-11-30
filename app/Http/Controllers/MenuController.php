@@ -31,7 +31,7 @@ class MenuController extends Controller
         return Inertia::render('Auth/Menu', $data);
     }
 
-    public function save(Request $request)
+    public function save(Request $request, $internal = false)
     {
 
         // erros
@@ -42,16 +42,14 @@ class MenuController extends Controller
             'error' => 0
         ];
 
-        $operationLog = 0;
-        $dataBeforeLog = null;
+
         $agendamento = new Agendamentos();
-        $status = false; // Caiu na validação do status?
+     
 
         // Tentando achar um agendamento com base no que foi enviado via request
         $campoId = $request->campo_id; // ID do campo
         $startOn = Carbon::parse($request->start_on); // Converte para um objeto Carbon
         $endOn = Carbon::parse($request->end_on); // Converte para um objeto Carbon
-
 
         // // SELECT *
         // // FROM agendamentos
@@ -80,6 +78,8 @@ class MenuController extends Controller
 
         $conflito = $conflito->exists();
 
+        $saveAgendamento = false;
+
         // Vai cair no if abaixo caso a data e o horário estiver livre
         if (!$conflito) {
             
@@ -90,7 +90,7 @@ class MenuController extends Controller
                 'user_id' => Auth::user()->id
             ];
 
-            $saveAgendamento = false;
+       
 
             if ($request->id != 0) {
                 $dataAgendamento['id'] = $request->id;
@@ -113,73 +113,65 @@ class MenuController extends Controller
         }
 
 
-
-
-        if ($request->id != 0) {
-
-            $operationLog = 1;
-            $agendamento = Agendamentos::find($request->id);
-
-            // $dataBeforeLog = [
-            //     'user_id' => $agendamento->user_id,
-            //     'campo_id' => $agendamento->campo_id,
-            //     'date' => $agendamento->date,
-            //     'init_time' => $agendamento->init_time,
-            //     'final_time' => $agendamento->final_time,
-            //     'status' => $agendamento->status
-            // ];
-
-            // $pagamentos = Pagamentos::query()->where("mensalidade_id", $agendamento->id)->get();
-            // if (!$pagamentos->isEmpty()) {
-
-            //     $status = true;
-            //     $dataAgendamento['status'] = $request->status == 0 ? $dataBeforeLog['status'] : $request->status;
-            // }
+        if ($internal) {
+            return $saveAgendamento;
+        } else {
+            return json_encode($data);
         }
-
-
-
-        // if ($saveAgendamento) {
-        //     $mensagem = "Mensalidade salva com sucesso!";
-
-        //     if ($status) {
-        //         $mensagem = "Mensalidade salva, porém não pode ser desativada!";
-        //     }
-
-        //     $alert = Alert::i(Alert::SUCCESS, $mensagem);
-
-        //     MensalidadesLog::create([
-        //         "user_id" => auth()->user()->id,
-        //         'operation' => $operationLog,
-        //         "mensalidade_id" => $request->id == 0 ? $saveAgendamento->id : $request->id,
-        //         "before" => $dataBeforeLog ? json_encode($dataBeforeLog) : null,
-        //         "after" => json_encode($dataAgendamento)
-        //     ]);
-        // }
-
-        return json_encode($data);
+        
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $internal = false)
     {
         $data = [
             'status' => false
         ];
 
         $agendamento = Agendamentos::find($request->id);
+        $saveAgendamento = false;
+        $conflito = false;
+        $status = 0;
+
+        if ($internal) {
+            $status = $request->status;
+        }
 
         if ($agendamento) {
-            $dataAgendamento['id'] = $request->id;
-            $dataAgendamento['status'] = 0;
+            if ($status != 0) {
 
-            $saveAgendamento = $agendamento->update($dataAgendamento);
+                $startOn = Carbon::parse($agendamento->start_on); // Converte para um objeto Carbon
+                $endOn = Carbon::parse($agendamento->end_on); // Converte para um objeto Carbon
+
+                $conflito = Agendamentos::where('campo_id', $agendamento->campo_id)
+                ->where('status', 1)
+                ->whereNot("id", $agendamento->id)
+                ->where(function ($query) use ($startOn, $endOn) {
+                    $query->where(function ($q) use ($startOn, $endOn) {
+                        // Verifica sobreposição
+                        $q->where('start_on', '<', $endOn)
+                            ->where('end_on', '>', $startOn);
+                    });
+                })->exists();
+            }
+
+            if (!$conflito or $status == 0) {
+                $dataAgendamento['id'] = $request->id;
+                $dataAgendamento['status'] = $status;
+    
+                $saveAgendamento = $agendamento->update($dataAgendamento);
+            }
+           
 
             if ($saveAgendamento) {
                 $data['status'] = true;
             }
         }
 
-        return json_encode($data);
+        if ($internal) {
+            return $saveAgendamento;
+        } else {
+            return json_encode($data);
+        }
     }
 
 

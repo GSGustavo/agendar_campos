@@ -20,15 +20,15 @@ export default {
             dialogMaps: false,
 
             maps_link: "",
-       
+
             editedItem: {
-                id: '',
+                id: null,
                 name: '',
                 maps_link: '',
 
             },
             defaultItem: {
-                id: '',
+                id: null,
                 name: '',
                 maps_link: '',
             },
@@ -49,12 +49,10 @@ export default {
 
         // Você quer realmente inativar este usuário?
         formTitle() {
-            return this.editedIndex === -1 ? 'Novo Usuário' : 'Editar Usuário'
+            return this.editedIndex === -1 ? 'Novo Campo' : 'Editar Campo'
         },
 
-        // statusTitle() {
-        //     return this.statusIndex === 1 ? 'Você quer realmente inativar este usuário?' : 'Deseja ativar este usuário?' 
-        // }
+ 
     },
     components: { BreadcrumbDefault },
     methods: {
@@ -80,14 +78,12 @@ export default {
                 } else {
                     console.log("erro")
                 }
-
             })
         },
         editItem(item) {
             this.editedIndex = this.campos.indexOf(item)
             this.editedItem = Object.assign({}, item)
 
-            this.editedItem.is_admin = item.is_admin === 1
 
             this.dialog = true
         },
@@ -104,8 +100,6 @@ export default {
             this.dialogDelete = true
         },
 
-
-
         deleteItemConfirm() {
 
             axios.post(usePage().props.routeapioperationscampos, this.statusData)
@@ -117,11 +111,8 @@ export default {
                     }
                 })
 
-
-
             this.closeDelete()
         },
-
 
         closeDialogMaps() {
             this.dialogMaps = false
@@ -144,19 +135,15 @@ export default {
             })
         },
 
-
-
         save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.campos[this.editedIndex], this.editedItem)
 
+            if (this.editedItem.nome !== '' && this.editedItem.maps_link !== '') {
                 axios.post(usePage().props.routeapioperationscampos, {
                     operation: 1,
                     id: this.editedItem.id,
-                    name: this.editedItem.name,
-                    lastname: this.editedItem.lastname,
-                    email: this.editedItem.email,
-                    is_admin: this.editedItem.is_admin ? 1 : 0
+                    nome: this.editedItem.nome,
+                    maps_link: this.editedItem.maps_link,
+
                 })
                     .then((response) => {
                         if (response.status === 200) {
@@ -165,12 +152,11 @@ export default {
                             console.log("erro")
                         }
                     })
-
-
+                    this.close()
             } else {
-                this.campos.push(this.editedItem)
+                this.showSnackBar("red", 'Preencha todos os campos!')
             }
-            this.close()
+        
         },
     },
     mounted() {
@@ -218,11 +204,11 @@ export default {
                     Maps
                 </v-btn>
 
-                
+
             </template>
 
             <template v-slot:item.status="{ item }">
-                <v-chip color="green" v-if="item.status === '1'" class="">
+                <v-chip color="green" v-if="item.status === 1" class="">
                     Ativo
                 </v-chip>
                 <v-chip v-else color="red">
@@ -287,7 +273,7 @@ export default {
                                         </div>
 
                                         <iframe id="iframe" ref="iframe" :src="editedItem.maps_link" height="350"
-                                        loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                            loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
 
 
 
@@ -321,25 +307,25 @@ export default {
                     </v-dialog>
 
                     <v-dialog v-model="dialogMaps" max-width="900px">
-                    <v-card>
+                        <v-card>
 
-                        <v-card-text>
-                            <div class="flex items-center justify-center">
-                                <iframe id="iframe" ref="iframe" :src="maps_link" height="450" width="800"
-                                    loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
+                            <v-card-text>
+                                <div class="flex items-center justify-center">
+                                    <iframe id="iframe" ref="iframe" :src="maps_link" height="450" width="800"
+                                        loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
 
-                        </v-card-text>
+                            </v-card-text>
 
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
 
-                            <v-btn color="blue-darken-1" variant="text" @click="closeDialogMaps">Fechar</v-btn>
+                                <v-btn color="blue-darken-1" variant="text" @click="closeDialogMaps">Fechar</v-btn>
 
-                            <v-spacer></v-spacer>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+                                <v-spacer></v-spacer>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
 
 
 

@@ -60,6 +60,7 @@ class HandleInertiaRequests extends Middleware
             'routedashboard' => route("dashboard.index"),
             'routecampos' => route("campos.index"),
             'routeusers' => route('users.index'),
+            'routeagendamentos' => route("agendamentos.index")
         ]);
     }
 }

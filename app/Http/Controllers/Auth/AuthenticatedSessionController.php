@@ -20,6 +20,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+
+       
         // Fazendo isso pro sintético ficar como primeira opção no select do menu
         $campos = Campos::query()
             ->where("status", '1')
@@ -44,17 +46,24 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
 
+        $subdomain = \Illuminate\Support\Arr::first(explode('.', request()->getHost()));
+
         $user = User::select()->where('email', $request->email)->exists();
         $status = User::select()->where('email', $request->email)->where("status", '1')->exists();
         
-
         if ($user and $status) {
             if ($user) {
                 $request->authenticate();
 
                 $request->session()->regenerate();
     
-                return redirect()->intended(route('auth.menu.index', absolute: false));
+                $route = 'auth.menu.index';
+
+                if ($subdomain == "dash") {
+                    $route = 'dashboard.index';
+                }
+
+                return redirect()->intended(route($route, absolute: false));
             } else {
                 $data = [
                     'email' => $user->email
@@ -67,9 +76,6 @@ class AuthenticatedSessionController extends Controller
         } else {
             return back()->withErrors(['account' => 'A conta não existe!']);
         }
-
-    
-        
     
     }
 

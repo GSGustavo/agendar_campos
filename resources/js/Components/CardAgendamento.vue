@@ -337,7 +337,7 @@ export default {
                                         <p class="my-2 font-black">
                                             Campo:
                                         </p>
-                                        Sintético
+                                        {{ campo }}
                                     </div>
                                 </div>
 

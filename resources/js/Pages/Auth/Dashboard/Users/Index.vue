@@ -263,11 +263,11 @@ export default {
                     <v-spacer></v-spacer>
 
                     <v-dialog v-model="dialog" max-width="500px">
-                        <template v-slot:activator="{ props }">
+                        <!-- <template v-slot:activator="{ props }">
                             <v-btn-info v-bind="props">
                                 Novo Usuário
                             </v-btn-info>
-                        </template>
+                        </template> -->
                         <v-card>
                             <v-card-title>
                                 <span class="text-h5">{{ formTitle }}</span>

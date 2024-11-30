@@ -71,7 +71,7 @@ onClickOutside(target, () => {
             <ul class="mb-6 flex flex-col gap-1.5">
                 <SidebarItem label="Usuários" icon='ri-user-line' :route="$page.props.routeusers" />
 
-                <SidebarItem label="Agendamentos" icon='ri-time-line' :route="$page.props.routeusers" />
+                <SidebarItem label="Agendamentos" icon='ri-time-line' :route="$page.props.routeagendamentos" />
                 <SidebarItem label="Campos" icon='ri-football-line' :route="$page.props.routecampos" />
             </ul>
           </div>
