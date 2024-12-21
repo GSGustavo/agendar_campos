@@ -83,8 +83,6 @@ createInertiaApp({
             .use(plugin)
             .use(vuetify)
             .use(pinia)
-   
-            
             .mount(el)
     },
 })
