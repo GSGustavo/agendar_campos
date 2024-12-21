@@ -1,61 +1,3 @@
-<template>
-
-    <div class="flex flex-col gap-5 justify-center items-center">
-
-        <form method="POST" :action="url" class="flex flex-col gap-10 justify-center items-center" id="form">
-            <input v-model="start_on" type="hidden" id="start_on" name="start_on">
-            <input v-model="end_on" type="hidden" id="end_on" name="end_on">
-
-            <div class="flex justify-center items-center">
-                <div class="w-[300px] flex flex-col mx-auto">
-                    <p class="my-2 font-black">
-                        Escolha o campo:
-                    </p>
-                    <Select />
-                </div>
-            </div>
-
-
-            <div class="flex justify-center items-center">
-                <div class="w-[300px] flex flex-col mx-auto">
-                    <p class="my-2 font-black">
-                        Escolha as datas que deseja reservar:
-                    </p>
-
-                    <VueDatePicker ref="datepicker" id="teste" locale="pt-br" v-model="date"
-                        placeholder="Garanta sua vaga" :multi-dates="{ limit: 1 }" :enable-time-picker="false"
-                        week-start="0" :day-names="['D', 'S', 'T', 'Q', 'Q', 'S', 'S']" @update:model-value="handleDate"
-                        select-text="Escolher" cancel-text="Fechar" />
-                </div>
-            </div>
-            <div class="justify-center items-center">
-                <div class="w-[300px] flex flex-col mx-auto">
-                    <p class="my-2 font-black">
-                        Escolha o horário que deseja reservar:
-                    </p>
-
-                    <VueDatePicker locale="pt-br" :start-time="startTime" v-model="time" time-picker
-                        :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário"
-                        minutes-increment="5" @update:model-value="handleTime" select-text="Escolher"
-                        cancel-text="Fechar" />
-                </div>
-            </div>
-            <div class="mx-auto">
-                <button @click.prevent="saveAgendamento" type="submit"
-                    class="bg-green text-black py-2 px-5 rounded-[10px] hover:bg-transparent  hover:text-black font-black border-2 hover:border-black transition-all duration-100">
-                    <i class="ri-calendar-line" />
-                    Agendar
-                </button>
-            </div>
-        </form>
-        <v-snackbar :timeout="5000" elevation="50" :color="snackColor" v-model="snackbar">
-            <p class="text-center font-black">
-                {{ snackText }}
-            </p>
-        </v-snackbar>
-    </div>
-</template>
-
 <script>
 import axios from 'axios';
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -64,11 +6,12 @@ import { ref } from 'vue';
 import ModalDisponibilidades from './ModalDisponibilidades.vue';
 import Select from './Select.vue';
 import DatePickerInstance from "@vuepic/vue-datepicker"
+import { Link } from '@inertiajs/vue3';
 
 
 
 export default {
-    components: { VueDatePicker, ModalDisponibilidades, Select },
+    components: { VueDatePicker, ModalDisponibilidades, Select, Link },
     props: {
         'url': String
     },
@@ -166,7 +109,7 @@ export default {
                 modelDataInit = `${initHour}:${initMinutes}`
                 modelDataEnd = `${endHour}:${endMinutes}`
             }
-            
+
             this.init_time = modelDataInit
             this.end_time = modelDataEnd
         }
@@ -175,17 +118,73 @@ export default {
 
 </script>
 
+<template>
 
-<!-- Como não tem como bloquear as datas anteriores ao dia atual 
- será feito uma validação a cada data selecionada via JS vanilla -->
+    <div class="flex flex-col gap-5 justify-center items-center">
+
+        <template v-if="!$page.props.permitiragendamento">
+            <v-alert icon="ri-information-line"
+                text="Você ainda não pode realizar agendamentos pois precisa completar seu cadastro."
+                title="Complete seu cadastro" type="error" variant="tonal">
+            </v-alert>
+            <Link as="button" href="/profile">
+            <v-btn-info> <v-icon icon="ri-arrow-right-s-fill"></v-icon> Completar Cadastro</v-btn-info>
+            </Link>
+        </template>
+        <template v-else>
+            <form method="POST" :action="url" class="flex flex-col gap-10 justify-center items-center" id="form">
+                <input v-model="start_on" type="hidden" id="start_on" name="start_on">
+                <input v-model="end_on" type="hidden" id="end_on" name="end_on">
+
+                <div class="flex justify-center items-center">
+                    <div class="w-[300px] flex flex-col mx-auto">
+                        <p class="my-2 font-black">
+                            Escolha o campo:
+                        </p>
+                        <Select />
+                    </div>
+                </div>
 
 
-<!-- https://vue3datepicker.com/props/general-configuration/#loading -->
+                <div class="flex justify-center items-center">
+                    <div class="w-[300px] flex flex-col mx-auto">
+                        <p class="my-2 font-black">
+                            Escolha as datas que deseja reservar:
+                        </p>
 
-<!-- Usar isso caso tenha alguma manutenção no campo por exemplo: -->
-<!-- https://vue3datepicker.com/slots/content/#marker -->
+                        <VueDatePicker ref="datepicker" id="teste" locale="pt-br" v-model="date"
+                            placeholder="Garanta sua vaga" :multi-dates="{ limit: 1 }" :enable-time-picker="false"
+                            week-start="0" :day-names="['D', 'S', 'T', 'Q', 'Q', 'S', 'S']"
+                            @update:model-value="handleDate" select-text="Escolher" cancel-text="Fechar" />
+                    </div>
+                </div>
+                <div class="justify-center items-center">
+                    <div class="w-[300px] flex flex-col mx-auto">
+                        <p class="my-2 font-black">
+                            Escolha o horário que deseja reservar:
+                        </p>
+
+                        <VueDatePicker locale="pt-br" :start-time="startTime" v-model="time" time-picker
+                            :range="{ disableTimeRangeValidation: true }" placeholder="Escolha seu horário"
+                            minutes-increment="5" @update:model-value="handleTime" select-text="Escolher"
+                            cancel-text="Fechar" />
+                    </div>
+                </div>
+                <div class="mx-auto">
+                    <button @click.prevent="saveAgendamento" type="submit"
+                        class="bg-green text-black py-2 px-5 rounded-[10px] hover:bg-transparent  hover:text-black font-black border-2 hover:border-black transition-all duration-100">
+                        <i class="ri-calendar-line" />
+                        Agendar
+                    </button>
+                </div>
+            </form>
+        </template>
 
 
-
-<!-- toasts -->
-<!-- https://buefy.org/ -->
+        <v-snackbar :timeout="5000" elevation="50" :color="snackColor" v-model="snackbar">
+            <p class="text-center font-black">
+                {{ snackText }}
+            </p>
+        </v-snackbar>
+    </div>
+</template>

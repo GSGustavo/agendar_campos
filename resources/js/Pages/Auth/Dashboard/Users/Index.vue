@@ -26,6 +26,7 @@ export default {
                 lastname: '',
                 email: '',
                 is_admin: false,
+                cpf: ''
             },
             defaultItem: {
                 id: '',
@@ -33,6 +34,7 @@ export default {
                 lastname: '',
                 email: '',
                 is_admin: false,
+                cpf: ''
             },
             headers: [
                 { title: 'ID', key: 'id' },
@@ -57,7 +59,7 @@ export default {
         },
 
         // statusTitle() {
-        //     return this.statusIndex === 1 ? 'Você quer realmente inativar este usuário?' : 'Deseja ativar este usuário?' 
+        //     return this.statusIndex === 1 ? 'Você quer realmente inativar este usuário?' : 'Deseja ativar este usuário?'
         // }
     },
     components: { BreadcrumbDefault },
@@ -181,6 +183,7 @@ export default {
                     name: this.editedItem.name,
                     lastname: this.editedItem.lastname,
                     email: this.editedItem.email,
+                    cpf: this.editItem.cpf,
                     is_admin: this.editedItem.is_admin ? 1 : 0
                 })
                 .then((response) => {
@@ -223,7 +226,7 @@ export default {
         <div>
             <v-btn :disabled="loading" append-icon="ri-refresh-line" text="Recarregar" @click="onClick"></v-btn>
         </div>
-        
+
 
 
         <v-text-field v-model="search" label="Pesquisar" prepend-inner-icon="ri-search-line" variant="outlined"
@@ -327,14 +330,31 @@ export default {
 
                                         </div>
 
-                                        
-                            
+                                        <div class="flex flex-col gap-2">
+                                            <div>
+                                                <span class="label-text font-black">CPF: <span
+                                                        class="text-red-500">*</span> </span>
+                                            </div>
+                                            <label class="input input-bordered flex items-center gap-2">
+
+
+                                                <!-- <input type="text" class="grow" placeholder="Ex.: João" /> -->
+
+                                                <v-text-field v-model="editedItem.cpf" variant="outlined"
+                                                    prepend-inner-icon="ri-info-card-line"
+                                                    placeholder="CPF"></v-text-field>
+                                            </label>
+
+                                        </div>
+
+
+
 
                                         <div class="flex flex-col gap-2">
                                             <v-switch v-model="editedItem.is_admin"  label="Administrador"></v-switch>
                                         </div>
-                                    
-                                
+
+
                                     </div>
 
                                 </v-container>
@@ -354,7 +374,7 @@ export default {
                     <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
                             <v-card-title class="text-h5">{{ statusTitle }}</v-card-title>
-                          
+
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
@@ -365,7 +385,7 @@ export default {
                     </v-dialog>
                     <v-dialog v-model="dialogReset" max-width="500px">
                         <v-card>
-                           
+
                             <v-card-text>
                                 <v-container>
                                     <p>
@@ -382,7 +402,7 @@ export default {
                         </v-card>
                     </v-dialog>
 
-                  
+
                 </v-toolbar>
             </template>
 
@@ -397,7 +417,7 @@ export default {
                     <v-icon v-else size="small" @click="deleteItem(1, item.id)">
                         ri-check-line
                     </v-icon>
-                  
+
                     <v-icon size="small" @click="resetPass(item)">
                         ri-git-repository-private-line
                     </v-icon>

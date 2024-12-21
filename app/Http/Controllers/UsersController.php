@@ -33,7 +33,7 @@ class UsersController extends Controller
             'email',
             'is_admin',
             'status',
-
+            'cpf',
             // Estou usando cast la no model dos usuários para formatar as colunas de datas
             'created_at',
             'updated_at'
@@ -115,7 +115,7 @@ class UsersController extends Controller
             }
         } else if ($operation == 2) {
             $request->validate(['email' => 'required|email']);
- 
+
             $status = Password::sendResetLink(
                 $request->only('email')
             );
@@ -125,9 +125,9 @@ class UsersController extends Controller
 
             if (!$resetSave) {
                 $data['error'] = __($status);
-            } 
+            }
 
-            
+
 
 
             $data['status'] = $resetSave;

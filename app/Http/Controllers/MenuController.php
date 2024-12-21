@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agendamentos;
 use App\Models\Campos;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -20,12 +21,15 @@ class MenuController extends Controller
             ->orderBy("id", "asc")
             ->get(['id', 'nome']);
 
+        $user = User::find(auth()->user()->id);
 
+        $permitiragendamento = $user->cpf != null ? true : false;
 
         $data = [
             'campos' => $campos,
             'apigetcampo' => route("api.auth.menu.getcampo"),
             'apigetagendamentos' => route("api.auth.menu.getagendamentos"),
+            'permitiragendamento' => $permitiragendamento
         ];
 
         return Inertia::render('Auth/Menu', $data);

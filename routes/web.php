@@ -22,7 +22,9 @@ Route::domain(env('SESSION_DOMAIN'))->group(function() {
 
 require __DIR__.'/auth.php';
 
-Route::domain("dash." . env('SESSION_DOMAIN'))->group(function() {
+Route::domain("dash." . env('SESSION_DOMAIN'))
+->middleware('auth')
+->group(function() {
     Route::controller(DashboardController::class)->group(function() {
         Route::get("/", 'index')->name("dashboard.index");
        
